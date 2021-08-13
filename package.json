@@ -1,0 +1,11 @@
+{
+	"name": "server",
+	"version": "1.0.0",
+	"main": "main.go",
+	"author": "Adam Lehechka",
+	"license": "MIT",
+	"scripts": {
+		"start": "gin -p 8000 -a 8080 run streamr",
+		"build": "go build -a streamr"
+	}
+}
