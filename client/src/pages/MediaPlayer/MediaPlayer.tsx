@@ -1,3 +1,4 @@
+import { baseURL } from 'api';
 import { useRef } from 'react';
 import ReactHlsPlayer from 'react-hls-player';
 import styled from 'styled-components';
@@ -14,7 +15,7 @@ const MediaPlayer = ({ name, media }: Props) => {
 		<Wrapper>
 			<ReactHlsPlayer
 				playerRef={playerRef}
-				src={`http://localhost:8000/media/${media}/${name}/outputlist.m3u8`}
+				src={`${baseURL}/media/${media}/${name}/outputlist.m3u8`}
 				hlsConfig={{
 					maxLoadingDelay: 4,
 					minAutoBitrate: 0,

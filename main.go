@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -12,14 +13,14 @@ import (
 )
 
 // configure the songs directory name and port
-const mediaDir string = "./media"
+const mediaDir string = "media"
 const port string = "8080"
 
 func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
-	router.GET("/", getMedia)
+	router.GET("/media-finder/:mediaType", getMediaDir)
 	router.StaticFS("/media", http.Dir(mediaDir))
 
 	err := router.Run(":" + port)
@@ -28,9 +29,9 @@ func main() {
 	}
 }
 
-func getMedia(c *gin.Context)  {
-
-		paths, err := FilePathWalkDir(mediaDir)
+func getMediaDir(c *gin.Context)  {
+		mediaType := c.Param("mediaType")
+		paths, err := GetMediaDir(fmt.Sprintf(`%s\%s`, mediaDir, mediaType))
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
@@ -38,21 +39,24 @@ func getMedia(c *gin.Context)  {
 			return
 		}
 
+		fmt.Println(paths)
 		c.JSON(http.StatusOK, gin.H{
 			"paths": paths,
 		})
-
 }
 
-func FilePathWalkDir(root string) ([]string, error) {
-    var files []string
+func GetMediaDir(root string) ([]string, error) {
+    folders := make([]string, 0)
     err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-        if !info.IsDir() && strings.HasSuffix(path, ".m3u8") {
-            files = append(files, path)
+		subPath := strings.ReplaceAll(path, fmt.Sprintf(`%s\`, root), "")
+		pathParts := strings.Split(subPath, `\`)
+		fmt.Println(path, subPath, pathParts)
+        if info.IsDir() && path != root && len(pathParts) <= 1 {
+            folders = append(folders, pathParts[0])
         }
         return nil
     })
-    return files, err
+    return folders, err
 }
 
 // TODO: Create media converter
