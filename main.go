@@ -20,6 +20,7 @@ func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
+	router.POST("/upload/:mediaType/:fileName", UploadFile)
 	router.GET("/media-finder/:mediaType", getMediaDir)
 	router.StaticFS("/media", http.Dir(mediaDir))
 
@@ -38,8 +39,6 @@ func getMediaDir(c *gin.Context)  {
 			})
 			return
 		}
-
-		fmt.Println(paths)
 		c.JSON(http.StatusOK, gin.H{
 			"paths": paths,
 		})
@@ -50,13 +49,27 @@ func GetMediaDir(root string) ([]string, error) {
     err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		subPath := strings.ReplaceAll(path, fmt.Sprintf(`%s\`, root), "")
 		pathParts := strings.Split(subPath, `\`)
-		fmt.Println(path, subPath, pathParts)
         if info.IsDir() && path != root && len(pathParts) <= 1 {
             folders = append(folders, pathParts[0])
         }
         return nil
     })
     return folders, err
+}
+
+func UploadFile(c *gin.Context) {
+	mediaType := c.Param("mediaType")
+	fileName := c.Param("fileName")
+	file, err := c.FormFile("file")
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	fmt.Println(file.Filename, mediaType, fileName)
 }
 
 // TODO: Create media converter

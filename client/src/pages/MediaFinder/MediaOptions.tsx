@@ -1,4 +1,5 @@
 import { MediaType, useMediaOptions } from 'api/media';
+import { PaddedLink } from 'components/StyledLink';
 import { Link } from 'wouter';
 
 interface Props {
@@ -9,14 +10,17 @@ const MediaOptions = ({ mediaType }: Props) => {
 	const { data, isLoading } = useMediaOptions(mediaType);
 
 	return (
-		<ul>
-			{isLoading && <li>loading...</li>}
-			{data?.paths.map((path) => (
-				<li>
-					<Link to={`/media/${mediaType}/${path}`}>{path}</Link>
-				</li>
-			))}
-		</ul>
+		<>
+			<PaddedLink to={`/media`}>{'<- Back'}</PaddedLink>
+			<ul>
+				{isLoading && <li>loading...</li>}
+				{data?.paths.map((path) => (
+					<li key={path}>
+						<Link to={`/media/${mediaType}/${path}`}>{path}</Link>
+					</li>
+				))}
+			</ul>
+		</>
 	);
 };
 

@@ -1,4 +1,5 @@
 import { baseURL } from 'api';
+import { PaddedLink } from 'components/StyledLink';
 import { useRef } from 'react';
 import ReactHlsPlayer from 'react-hls-player';
 import styled from 'styled-components';
@@ -13,25 +14,39 @@ const MediaPlayer = ({ name, media }: Props) => {
 
 	return (
 		<Wrapper>
-			<ReactHlsPlayer
-				playerRef={playerRef}
-				src={`${baseURL}/media/${media}/${name}/outputlist.m3u8`}
-				hlsConfig={{
-					maxLoadingDelay: 4,
-					minAutoBitrate: 0,
-					lowLatencyMode: true,
-				}}
-				controls
-				width='100%'
-			/>
+			<PaddedLink to={`/media/${media}`}>{'<- Back'}</PaddedLink>
+			<SizeWrapper>
+				<VideoWrapper>
+					<ReactHlsPlayer
+						playerRef={playerRef}
+						src={`${baseURL}/media/${media}/${name}/outputlist.m3u8`}
+						hlsConfig={{
+							maxLoadingDelay: 4,
+							minAutoBitrate: 0,
+							lowLatencyMode: true,
+						}}
+						controls
+						width='100%'
+						height='100%'
+					/>
+				</VideoWrapper>
+			</SizeWrapper>
 		</Wrapper>
 	);
 };
 
-const Wrapper = styled.div`
-	width: 50%;
-	max-width: 600px;
-	border-style: dashed;
+const Wrapper = styled.div``;
+
+const SizeWrapper = styled.div`
+	margin-top: 20px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	max-height: calc(100vh - 24px);
+`;
+
+const VideoWrapper = styled.div`
+	max-height: 100%;
 `;
 
 export default MediaPlayer;
