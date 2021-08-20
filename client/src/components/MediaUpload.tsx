@@ -1,7 +1,11 @@
-import { MediaType, mediaTypes, useUploadMedia } from 'api/media';
+import { MediaType, useUploadMedia } from 'api/media';
 import { useRef, useState } from 'react';
 
-const MediaUpload = () => {
+interface MediaUploadProps {
+	mediaType?: MediaType;
+}
+
+const MediaUpload = ({ mediaType }: MediaUploadProps) => {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const [files, setFiles] = useState<File[]>([]);
@@ -23,7 +27,7 @@ const MediaUpload = () => {
 			<ul>
 				{files.map((file, index) => (
 					<li key={file.name}>
-						<UploadMedia file={file} removeFile={() => removeFile(index)} />
+						<UploadMedia file={file} removeFile={() => removeFile(index)} mediaType={mediaType} />
 					</li>
 				))}
 			</ul>
@@ -31,45 +35,35 @@ const MediaUpload = () => {
 	);
 };
 
-interface UploadMediaProps {
+interface UploadMediaProps extends MediaUploadProps {
 	file: File;
 	removeFile: VoidFunction;
 }
 
-const UploadMedia = ({ file, removeFile }: UploadMediaProps) => {
+const UploadMedia = ({ file, removeFile, mediaType }: UploadMediaProps) => {
 	const cleanName = (name?: string) => name?.split('.')[0].replace(/\W/g, '') || '';
 
-	const [mediaType, setMediaType] = useState<MediaType>('movies');
 	const [fileName, setFileName] = useState<string>(cleanName(file.name));
 
 	const handleFileNameChange = (event: React.ChangeEvent<HTMLInputElement>) =>
 		setFileName(cleanName(event.target.value));
-	const handleMediaTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
-		setMediaType(event.target.value as MediaType);
 
 	const [mutation, progress] = useUploadMedia();
 	const handleSubmit = () => {
-		mutation.mutate({ fileName, file, mediaType });
+		if (mediaType) return mutation.mutate({ fileName, file, mediaType });
 	};
 
 	return (
 		<>
 			{file.name}
-			<select value={mediaType} onChange={handleMediaTypeChange} disabled={mutation.isLoading}>
-				{mediaTypes.map((mediaType) => (
-					<option key={mediaType} value={mediaType}>
-						{mediaType}
-					</option>
-				))}
-			</select>
 			<input value={fileName} onChange={handleFileNameChange} disabled={mutation.isLoading} />
 			<button onClick={removeFile} disabled={mutation.isLoading}>
 				delete
 			</button>
-			<button onClick={handleSubmit} disabled={mutation.isLoading}>
+			<button onClick={handleSubmit} disabled={mutation.isLoading || progress === 100}>
 				upload
 			</button>
-			{progress}%
+			{progress !== undefined && `${progress}%`}
 		</>
 	);
 };

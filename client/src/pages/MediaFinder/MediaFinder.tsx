@@ -1,6 +1,5 @@
 import { Link } from 'wouter';
 import { mediaTypes } from 'api/media';
-import MediaUpload from 'components/MediaUpload';
 
 const MediaFinder = () => {
 	return (
@@ -12,7 +11,6 @@ const MediaFinder = () => {
 					</li>
 				))}
 			</ul>
-			<MediaUpload />
 		</>
 	);
 };

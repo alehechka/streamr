@@ -1,2 +1,2 @@
-server/media/*
+**/media/*
 gin-bin.exe

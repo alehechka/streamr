@@ -1,4 +1,5 @@
 import { MediaType, useMediaOptions } from 'api/media';
+import MediaUpload from 'components/MediaUpload';
 import { PaddedLink } from 'components/StyledLink';
 import { Link } from 'wouter';
 
@@ -20,6 +21,7 @@ const MediaOptions = ({ mediaType }: Props) => {
 					</li>
 				))}
 			</ul>
+			<MediaUpload mediaType={mediaType} />
 		</>
 	);
 };
