@@ -1,4 +1,5 @@
-import { MediaType, useMediaOptions } from 'api/media';
+import { MediaType, mediaTypes, useMediaMetadata, useMediaOptions } from 'api/media';
+import Accordion from 'components/Accordion';
 import MediaUpload from 'components/MediaUpload';
 import { PaddedLink } from 'components/StyledLink';
 import { Link } from 'wouter';
@@ -8,20 +9,34 @@ interface Props {
 }
 
 const MediaOptions = ({ mediaType }: Props) => {
-	const { data, isLoading } = useMediaOptions(mediaType);
+	const { data, isLoading, refetch } = useMediaOptions(mediaType);
 
 	return (
 		<>
 			<PaddedLink to={`/media`}>{'<- Back'}</PaddedLink>
-			<ul>
-				{isLoading && <li>loading...</li>}
-				{data?.paths.map((path) => (
-					<li key={path}>
-						<Link to={`/media/${mediaType}/${path}`}>{path}</Link>
-					</li>
-				))}
-			</ul>
-			<MediaUpload mediaType={mediaType} />
+			{isLoading && <div>loading...</div>}
+			{data?.paths.map((path) => (
+				<Accordion key={path} label={<Link to={`/media/${mediaType}/${path}`}>{path}</Link>}>
+					<MediaOptionPanel mediaType={mediaType} path={path} />
+				</Accordion>
+			))}
+			<MediaUpload mediaType={mediaType} onUpload={refetch} />
+		</>
+	);
+};
+
+interface MediaOptionProps extends Props {
+	path: string;
+}
+
+const MediaOptionPanel = ({ mediaType, path }: MediaOptionProps) => {
+	const { data, isLoading, isError } = useMediaMetadata(mediaType, path, { retry: false });
+
+	return (
+		<>
+			{isLoading && <div>loading...</div>}
+			{isError && <div>no metadata found</div>}
+			{data && <div>{JSON.stringify(data)}</div>}
 		</>
 	);
 };

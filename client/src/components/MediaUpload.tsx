@@ -1,16 +1,16 @@
 import { MediaType, useUploadMedia } from 'api/media';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface MediaUploadProps {
 	mediaType?: MediaType;
+	onUpload?: VoidFunction;
 }
 
-const MediaUpload = ({ mediaType }: MediaUploadProps) => {
+const MediaUpload = ({ mediaType, onUpload }: MediaUploadProps) => {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const [files, setFiles] = useState<File[]>([]);
 	const addFiles = (files: FileList | null) => {
-		console.log(files);
 		setFiles((prevFiles) => [...prevFiles, ...Array.from(files || [])]);
 	};
 	const removeFile = (index: number) => setFiles((prevFiles) => prevFiles.filter((f, i) => i !== index));
@@ -27,7 +27,7 @@ const MediaUpload = ({ mediaType }: MediaUploadProps) => {
 			<ul>
 				{files.map((file, index) => (
 					<li key={file.name}>
-						<UploadMedia file={file} removeFile={() => removeFile(index)} mediaType={mediaType} />
+						<UploadMedia file={file} removeFile={() => removeFile(index)} mediaType={mediaType} onUpload={onUpload} />
 					</li>
 				))}
 			</ul>
@@ -40,7 +40,7 @@ interface UploadMediaProps extends MediaUploadProps {
 	removeFile: VoidFunction;
 }
 
-const UploadMedia = ({ file, removeFile, mediaType }: UploadMediaProps) => {
+const UploadMedia = ({ file, removeFile, mediaType, onUpload }: UploadMediaProps) => {
 	const cleanName = (name?: string) => name?.split('.')[0].replace(/\W/g, '') || '';
 
 	const [fileName, setFileName] = useState<string>(cleanName(file.name));
@@ -52,6 +52,12 @@ const UploadMedia = ({ file, removeFile, mediaType }: UploadMediaProps) => {
 	const handleSubmit = () => {
 		if (mediaType) return mutation.mutate({ fileName, file, mediaType });
 	};
+
+	useEffect(() => {
+		if (mutation.isSuccess && onUpload) {
+			onUpload();
+		}
+	}, [mutation.isSuccess, onUpload]);
 
 	return (
 		<>

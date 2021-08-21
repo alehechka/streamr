@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-func ConvertMP4ToHSL(filePath, fileName, outputName string) error {
+func ConvertMediaToHSL(filePath, fileName, outputName string) error {
 
 	cmd := exec.Command(
 		"ffmpeg",
@@ -25,10 +25,10 @@ func ConvertMP4ToHSL(filePath, fileName, outputName string) error {
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+		// fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return err
 	}
-	fmt.Println("Result: " + out.String())
+	// fmt.Println("Result: " + out.String())
 
 	return nil
 }

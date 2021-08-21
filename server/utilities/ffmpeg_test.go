@@ -8,7 +8,7 @@ import (
 )
 
 func TestConvertMP4ToHSL(t *testing.T) {
-	err := utilities.ConvertMP4ToHSL("./media/mp4", "test.mp4", "outputlist.m3u8")
+	err := utilities.ConvertMediaToHSL("./media/mp4", "test.mp4", "outputlist.m3u8")
 
 	assert.NilError(t, err)
 }

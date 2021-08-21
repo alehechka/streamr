@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@alehechka/react-hooks@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@alehechka/react-hooks/-/react-hooks-1.1.1.tgz#046e87f509f7970a15dcb6c56f7cb49c48d7cb46"
+  integrity sha512-IDnncdTyk18nVhc+OGta6C/C8BgZcHMbpZL4Iqwxf1uelSFbk6gdqq1R8DTjcRcJ00KlzkHco7VvU7ACkxjzUg==
+
 "@babel/code-frame@7.10.4":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.10.4.tgz#168da1a36e90da68ae8d49c0f1b48c7c6249213a"
