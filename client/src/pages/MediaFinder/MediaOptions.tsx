@@ -9,12 +9,13 @@ interface Props {
 }
 
 const MediaOptions = ({ mediaType }: Props) => {
-	const { data, isLoading, refetch } = useMediaOptions(mediaType);
+	const { data, isLoading, isError, refetch } = useMediaOptions(mediaType);
 
 	return (
 		<>
 			<PaddedLink to={`/media`}>{'<- Back'}</PaddedLink>
 			{isLoading && <div>loading...</div>}
+			{isError && <div>no media found</div>}
 			{data?.paths.map((path) => (
 				<Accordion key={path} label={<Link to={`/media/${mediaType}/${path}`}>{path}</Link>}>
 					<MediaOptionPanel mediaType={mediaType} path={path} />

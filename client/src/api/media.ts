@@ -11,7 +11,7 @@ const getMediaOptions = (mediaType?: MediaType) => {
 };
 
 export const useMediaOptions = (mediaType?: MediaType) => {
-	return useQuery(`mediaTypes:${mediaType}`, () => getMediaOptions(mediaType));
+	return useQuery(`mediaTypes:${mediaType}`, () => getMediaOptions(mediaType), { retry: false });
 };
 
 const uploadMedia = (

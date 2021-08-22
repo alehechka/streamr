@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -29,6 +30,9 @@ func GetMediaDir(c *gin.Context) {
 func getMediaDir(root string) ([]string, error) {
 	folders := make([]string, 0)
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if info == nil {
+			return errors.New("root folder not found")
+		}
 		subPath := strings.ReplaceAll(path, fmt.Sprintf(`%s\`, root), "")
 		pathParts := strings.Split(subPath, `\`)
 		if info.IsDir() && path != root && len(pathParts) <= 1 {
