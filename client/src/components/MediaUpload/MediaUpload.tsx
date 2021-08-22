@@ -1,5 +1,7 @@
 import { MediaType, useUploadMedia } from 'api/media';
 import { useEffect, useRef, useState } from 'react';
+import UploadStatus from '../UploadStatus';
+import { UploadMediaWrapper } from './MediaUpload.styled';
 
 interface MediaUploadProps {
 	mediaType?: MediaType;
@@ -68,7 +70,7 @@ const UploadMedia = ({ file, removeFile, mediaType, onUpload, invalidNames = [] 
 	}, [mutation.isSuccess, onUpload]);
 
 	return (
-		<>
+		<UploadMediaWrapper>
 			{file.name}
 			<input value={fileName} onChange={handleFileNameChange} disabled={mutation.isLoading} />
 			<button onClick={removeFile} disabled={mutation.isLoading}>
@@ -80,8 +82,8 @@ const UploadMedia = ({ file, removeFile, mediaType, onUpload, invalidNames = [] 
 			>
 				upload
 			</button>
-			{progress !== undefined && `${progress}%`}
-		</>
+			<UploadStatus percent={progress} />
+		</UploadMediaWrapper>
 	);
 };
 
