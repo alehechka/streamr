@@ -1,5 +1,5 @@
 import api from './index';
-import { useMutation, useQuery, QueryOptions } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useState } from 'react';
 
 export const mediaTypes = ['movies', 'shows', 'songs'] as const;
@@ -44,7 +44,7 @@ export const useUploadMedia = () => {
 	return [mutation, progress] as const;
 };
 
-type MediaMetadata = {
+export type MediaMetadata = {
 	format: string;
 	fileType: string;
 	title: string;
@@ -64,6 +64,6 @@ const getMediaMetadata = (mediaType?: MediaType, title?: string) => {
 	return api.get<MediaMetadata>(`/metadata/${mediaType}/${title}`).then((res) => res.data);
 };
 
-export const useMediaMetadata = (mediaType?: MediaType, title?: string, options?: QueryOptions) => {
-	return useQuery(`mediaMetadata:${mediaType}:${title}`, () => getMediaMetadata(mediaType, title), options);
+export const useMediaMetadata = (mediaType?: MediaType, title?: string) => {
+	return useQuery(`mediaMetadata:${mediaType}:${title}`, () => getMediaMetadata(mediaType, title), { retry: false });
 };

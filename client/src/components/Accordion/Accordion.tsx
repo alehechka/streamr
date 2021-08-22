@@ -2,9 +2,10 @@ import { useToggle } from '@alehechka/react-hooks';
 import { ReactNode } from 'react';
 import { FC } from 'react';
 import { Dropdown, Wrap } from './Accordion.styled';
+import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 
 interface Props {
-	label: string | ReactNode;
+	label: ReactNode;
 }
 
 const Accordion: FC<Props> = ({ label, children }) => {
@@ -12,15 +13,11 @@ const Accordion: FC<Props> = ({ label, children }) => {
 
 	return (
 		<>
-			<Wrap onClick={toggleOpen}>
-				<h1>{label}</h1>
-				<span>{isOpen ? <div>minus</div> : <div>plus</div>}</span>
+			<Wrap onClick={toggleOpen} active={isOpen}>
+				{label}
+				<span>{isOpen ? <BsChevronUp /> : <BsChevronDown />}</span>
 			</Wrap>
-			{isOpen && (
-				<Dropdown>
-					<p>{children}</p>
-				</Dropdown>
-			)}
+			{isOpen && <Dropdown isOpen={isOpen}>{children}</Dropdown>}
 		</>
 	);
 };

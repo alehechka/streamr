@@ -1,4 +1,4 @@
-import { MediaType, mediaTypes, useMediaMetadata, useMediaOptions } from 'api/media';
+import { MediaMetadata, MediaType, useMediaMetadata, useMediaOptions } from 'api/media';
 import Accordion from 'components/Accordion';
 import MediaUpload from 'components/MediaUpload';
 import { PaddedLink } from 'components/StyledLink';
@@ -20,7 +20,12 @@ const MediaOptions = ({ mediaType }: Props) => {
 					<MediaOptionPanel mediaType={mediaType} path={path} />
 				</Accordion>
 			))}
-			<MediaUpload mediaType={mediaType} onUpload={refetch} />
+			<MediaUpload
+				mediaType={mediaType}
+				onUpload={refetch}
+				fileOptions={mediaType === 'songs' ? ['.mp3'] : ['.mp4']}
+				invalidNames={data?.paths}
+			/>
 		</>
 	);
 };
@@ -30,13 +35,37 @@ interface MediaOptionProps extends Props {
 }
 
 const MediaOptionPanel = ({ mediaType, path }: MediaOptionProps) => {
-	const { data, isLoading, isError } = useMediaMetadata(mediaType, path, { retry: false });
+	const { data, isLoading, isError } = useMediaMetadata(mediaType, path);
 
 	return (
 		<>
 			{isLoading && <div>loading...</div>}
 			{isError && <div>no metadata found</div>}
-			{data && <div>{JSON.stringify(data)}</div>}
+			<MediaMetadataPanel meta={data} />
+		</>
+	);
+};
+
+interface MetadataProps {
+	meta?: MediaMetadata;
+}
+
+const MediaMetadataPanel = ({ meta }: MetadataProps) => {
+	if (!meta) return <></>;
+	return (
+		<>
+			{meta.title && (
+				<p>
+					Title: <b>{meta.title}</b>
+					{meta.album && (
+						<>
+							{' from '}
+							<b>{meta.album}</b>
+						</>
+					)}
+				</p>
+			)}
+			{meta.artist && <p>Artist: {meta.artist}</p>}
 		</>
 	);
 };
