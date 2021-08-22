@@ -1,4 +1,4 @@
-import { MediaMetadata, MediaType, useMediaMetadata, useMediaOptions } from 'api/media';
+import { MediaMetadata, MediaType, mediaTypes, useMediaMetadata, useMediaOptions } from 'api/media';
 import Accordion from 'components/Accordion';
 import MediaUpload from 'components/MediaUpload';
 import { PaddedLink } from 'components/StyledLink';
@@ -21,12 +21,14 @@ const MediaOptions = ({ mediaType }: Props) => {
 					<MediaOptionPanel mediaType={mediaType} path={path} />
 				</Accordion>
 			))}
-			<MediaUpload
-				mediaType={mediaType}
-				onUpload={refetch}
-				fileOptions={mediaType === 'songs' ? ['.mp3'] : ['.mp4']}
-				invalidNames={data?.paths}
-			/>
+			{mediaType && mediaTypes.includes(mediaType) && (
+				<MediaUpload
+					mediaType={mediaType}
+					onUpload={refetch}
+					fileOptions={mediaType === 'songs' ? ['.mp3'] : ['.mp4']}
+					invalidNames={data?.paths}
+				/>
+			)}
 		</>
 	);
 };
