@@ -19,6 +19,8 @@ func main() {
 
 	router.POST("/upload/:mediaType/:fileName", endpoints.UploadMedia)
 
+	router.DELETE("/media/:mediaType/:fileName", endpoints.DeleteMedia)
+
 	router.GET("/media-finder/:mediaType", endpoints.GetMediaDir)
 	router.GET("/metadata/:mediaType/:fileName", endpoints.GetMediaMetadata)
 
