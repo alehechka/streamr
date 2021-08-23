@@ -1,7 +1,17 @@
 import { MediaType, useUploadMedia } from 'api/media';
-import { useEffect, useRef, useState } from 'react';
+import Input from 'components/Input';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import UploadStatus from '../UploadStatus';
-import { UploadMediaWrapper } from './MediaUpload.styled';
+import {
+	FileNameWrapper,
+	MediaUploadWrapper,
+	StyledButton,
+	UploadMediaMapWrapper,
+	UploadMediaWrapper,
+} from './MediaUpload.styled';
+import { BsFillTrashFill } from 'react-icons/bs';
+import { FaFileUpload } from 'react-icons/fa';
+import IconButton from 'components/IconButton';
 
 interface MediaUploadProps {
 	mediaType?: MediaType;
@@ -25,23 +35,22 @@ const MediaUpload = ({ mediaType, onUpload, fileOptions = ['.mp4', '.mp3'], inva
 	};
 
 	return (
-		<>
-			<button onClick={() => fileInputRef.current?.click()}>Upload Media</button>
+		<MediaUploadWrapper>
+			<StyledButton onClick={() => fileInputRef.current?.click()}>Upload {mediaType}</StyledButton>
 			<input type='file' accept={fileOptions.join(',')} onChange={handleChange} hidden ref={fileInputRef} />
-			<ul>
+			<UploadMediaMapWrapper>
 				{files.map((file, index) => (
-					<li key={file.name}>
-						<UploadMedia
-							file={file}
-							removeFile={() => removeFile(index)}
-							mediaType={mediaType}
-							onUpload={onUpload}
-							invalidNames={invalidNames}
-						/>
-					</li>
+					<UploadMedia
+						key={file.name}
+						file={file}
+						removeFile={() => removeFile(index)}
+						mediaType={mediaType}
+						onUpload={onUpload}
+						invalidNames={invalidNames}
+					/>
 				))}
-			</ul>
-		</>
+			</UploadMediaMapWrapper>
+		</MediaUploadWrapper>
 	);
 };
 
@@ -69,19 +78,20 @@ const UploadMedia = ({ file, removeFile, mediaType, onUpload, invalidNames = [] 
 		}
 	}, [mutation.isSuccess, onUpload]);
 
+	const isInvalid = useMemo(() => {
+		return invalidNames.includes(fileName);
+	}, [fileName]);
+
 	return (
 		<UploadMediaWrapper>
-			{file.name}
-			<input value={fileName} onChange={handleFileNameChange} disabled={mutation.isLoading} />
-			<button onClick={removeFile} disabled={mutation.isLoading}>
-				delete
-			</button>
-			<button
-				onClick={handleSubmit}
-				disabled={mutation.isLoading || progress === 100 || invalidNames.includes(fileName)}
-			>
-				upload
-			</button>
+			<FileNameWrapper>{file.name}</FileNameWrapper>
+			<Input value={fileName} onChange={handleFileNameChange} disabled={mutation.isLoading} invalid={isInvalid} />
+			<IconButton onClick={removeFile} disabled={mutation.isLoading}>
+				<BsFillTrashFill size={20} />
+			</IconButton>
+			<IconButton onClick={handleSubmit} disabled={mutation.isLoading || progress === 100 || isInvalid}>
+				<FaFileUpload size={20} />
+			</IconButton>
 			<UploadStatus percent={progress} />
 		</UploadMediaWrapper>
 	);

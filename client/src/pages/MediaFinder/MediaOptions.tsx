@@ -1,14 +1,16 @@
-import { MediaMetadata, MediaType, mediaTypes, useMediaMetadata, useMediaOptions } from 'api/media';
+import { MediaType, mediaTypes, useMediaOptions } from 'api/media';
 import Accordion from 'components/Accordion';
 import MediaUpload from 'components/MediaUpload';
 import { PaddedLink } from 'components/StyledLink';
 import { Link } from 'wouter';
+import MediaOptionPanel from './MediaOptionPanel';
+import { MediaUploadWrapper } from './MediaOptions.styled';
 
-interface Props {
+export interface MediaOptionsProps {
 	mediaType?: MediaType;
 }
 
-const MediaOptions = ({ mediaType }: Props) => {
+const MediaOptions = ({ mediaType }: MediaOptionsProps) => {
 	const { data, isLoading, isError, refetch } = useMediaOptions(mediaType);
 
 	return (
@@ -18,57 +20,19 @@ const MediaOptions = ({ mediaType }: Props) => {
 			{isError && <div>no media found</div>}
 			{data?.paths.map((path) => (
 				<Accordion key={path} label={<Link to={`/media/${mediaType}/${path}`}>{path}</Link>}>
-					<MediaOptionPanel mediaType={mediaType} path={path} />
+					<MediaOptionPanel mediaType={mediaType} path={path} onDelete={refetch} />
 				</Accordion>
 			))}
 			{mediaType && mediaTypes.includes(mediaType) && (
-				<MediaUpload
-					mediaType={mediaType}
-					onUpload={refetch}
-					fileOptions={mediaType === 'songs' ? ['.mp3'] : ['.mp4']}
-					invalidNames={data?.paths}
-				/>
+				<MediaUploadWrapper>
+					<MediaUpload
+						mediaType={mediaType}
+						onUpload={refetch}
+						fileOptions={mediaType === 'songs' ? ['.mp3'] : ['.mp4']}
+						invalidNames={data?.paths}
+					/>
+				</MediaUploadWrapper>
 			)}
-		</>
-	);
-};
-
-interface MediaOptionProps extends Props {
-	path: string;
-}
-
-const MediaOptionPanel = ({ mediaType, path }: MediaOptionProps) => {
-	const { data, isLoading, isError } = useMediaMetadata(mediaType, path);
-
-	return (
-		<>
-			{isLoading && <div>loading...</div>}
-			{isError && <div>no metadata found</div>}
-			<MediaMetadataPanel meta={data} />
-		</>
-	);
-};
-
-interface MetadataProps {
-	meta?: MediaMetadata;
-}
-
-const MediaMetadataPanel = ({ meta }: MetadataProps) => {
-	if (!meta) return <></>;
-	return (
-		<>
-			{meta.title && (
-				<p>
-					Title: <b>{meta.title}</b>
-					{meta.album && (
-						<>
-							{' from '}
-							<b>{meta.album}</b>
-						</>
-					)}
-				</p>
-			)}
-			{meta.artist && <p>Artist: {meta.artist}</p>}
 		</>
 	);
 };

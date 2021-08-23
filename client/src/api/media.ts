@@ -2,7 +2,11 @@ import api from './index';
 import { useMutation, useQuery } from 'react-query';
 import { useState } from 'react';
 
-export const mediaTypes = ['movies', 'shows', 'songs'] as const;
+export const mediaTypes = [
+	'movies',
+	'songs',
+	//'shows'
+] as const;
 export type MediaType = typeof mediaTypes[number];
 
 const getMediaOptions = (mediaType?: MediaType) => {
@@ -60,10 +64,19 @@ export type MediaMetadata = {
 };
 
 const getMediaMetadata = (mediaType?: MediaType, title?: string) => {
-	if (!mediaType || !title) return Promise.reject('No media type provided.');
+	if (!mediaType || !title) return Promise.reject('No media type or title provided.');
 	return api.get<MediaMetadata>(`/metadata/${mediaType}/${title}`).then((res) => res.data);
 };
 
 export const useMediaMetadata = (mediaType?: MediaType, title?: string) => {
 	return useQuery(`mediaMetadata:${mediaType}:${title}`, () => getMediaMetadata(mediaType, title), { retry: false });
+};
+
+const deleteMedia = (mediaType?: MediaType, title?: string) => {
+	if (!mediaType || !title) return Promise.reject('No media type or title provided.');
+	return api.delete(`/media/${mediaType}/${title}`).then((res) => res.data);
+};
+
+export const useDeleteMedia = () => {
+	return useMutation((media: { mediaType?: MediaType; title: string }) => deleteMedia(media.mediaType, media.title));
 };
