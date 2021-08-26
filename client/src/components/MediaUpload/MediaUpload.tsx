@@ -80,12 +80,17 @@ const UploadMedia = ({ file, removeFile, mediaType, onUpload, invalidNames = [] 
 
 	const isInvalid = useMemo(() => {
 		return invalidNames.includes(fileName);
-	}, [fileName]);
+	}, [fileName, invalidNames]);
 
 	return (
 		<UploadMediaWrapper>
 			<FileNameWrapper>{file.name}</FileNameWrapper>
-			<Input value={fileName} onChange={handleFileNameChange} disabled={mutation.isLoading} invalid={isInvalid} />
+			<Input
+				value={fileName}
+				onChange={handleFileNameChange}
+				disabled={mutation.isLoading || mutation.isSuccess}
+				invalid={isInvalid && !mutation.isSuccess}
+			/>
 			<IconButton onClick={removeFile} disabled={mutation.isLoading}>
 				<BsFillTrashFill size={20} />
 			</IconButton>

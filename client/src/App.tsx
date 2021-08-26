@@ -1,4 +1,4 @@
-import { Route, Redirect, useLocation } from 'wouter';
+import { Route } from 'wouter';
 import MediaFinder from 'pages/MediaFinder';
 import MediaPlayer from 'pages/MediaPlayer';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -9,16 +9,11 @@ import AppWrapper, { ContentWrapper } from 'components/AppWrapper';
 const App = () => {
 	const queryClient = new QueryClient();
 
-	const [path] = useLocation();
-	if (path === '/') {
-		return <Redirect to='/media' />;
-	}
-
 	return (
 		<AppWrapper>
 			<ContentWrapper>
 				<QueryClientProvider client={queryClient}>
-					<Route path='/media'>{MediaFinder}</Route>
+					<Route path='/'>{MediaFinder}</Route>
 					<Route path='/media/:media'>{(params) => <MediaOptions mediaType={params.media as MediaType} />}</Route>
 					<Route path='/media/:media/:name'>
 						{(params) => <MediaPlayer name={params.name} media={params.media} />}

@@ -3,14 +3,16 @@ import { MediaOptionsProps } from './MediaOptions';
 import styled from 'styled-components';
 import IconButton from 'components/IconButton';
 import { BsFillTrashFill } from 'react-icons/bs';
+import { FaPlay } from 'react-icons/fa';
 import { useEffect } from 'react';
 
 interface MediaOptionProps extends MediaOptionsProps {
 	path: string;
 	onDelete?: VoidFunction;
+	onNavigate?: VoidFunction;
 }
 
-const MediaOptionPanel = ({ mediaType, path, onDelete }: MediaOptionProps) => {
+const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOptionProps) => {
 	const { data, isLoading, isError } = useMediaMetadata(mediaType, path);
 
 	const deleteMedia = useDeleteMedia();
@@ -26,7 +28,7 @@ const MediaOptionPanel = ({ mediaType, path, onDelete }: MediaOptionProps) => {
 		if (deleteMedia.isSuccess && onDelete) {
 			onDelete();
 		}
-	}, [deleteMedia.isSuccess]);
+	}, [deleteMedia.isSuccess, onDelete]);
 
 	return (
 		<MediaOptionPanelWrapper>
@@ -35,9 +37,16 @@ const MediaOptionPanel = ({ mediaType, path, onDelete }: MediaOptionProps) => {
 				{isError && <div>no metadata found</div>}
 				<MediaMetadataPanel meta={data} />
 			</div>
-			<IconButton domain='danger'>
-				<BsFillTrashFill size={20} onClick={handleDelete} />
-			</IconButton>
+			<ButtonWrapper>
+				{onNavigate && (
+					<IconButton domain='primary'>
+						<FaPlay size={20} onClick={onNavigate} />
+					</IconButton>
+				)}
+				<IconButton domain='danger'>
+					<BsFillTrashFill size={20} onClick={handleDelete} />
+				</IconButton>
+			</ButtonWrapper>
 		</MediaOptionPanelWrapper>
 	);
 };
@@ -72,6 +81,12 @@ const MediaOptionPanelWrapper = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	padding: 15px 0;
+`;
+
+const ButtonWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
 `;
 
 export default MediaOptionPanel;

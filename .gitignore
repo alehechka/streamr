@@ -1,2 +1,7 @@
-**/media/*
+**/media/movies/**
+**/media/songs/**
+**/media/shows/**
+**/media/mp4/**
 gin-bin.exe
+client/
+ffmpeg

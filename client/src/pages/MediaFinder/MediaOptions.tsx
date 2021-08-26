@@ -2,7 +2,7 @@ import { MediaType, mediaTypes, useMediaOptions } from 'api/media';
 import Accordion from 'components/Accordion';
 import MediaUpload from 'components/MediaUpload';
 import { PaddedLink } from 'components/StyledLink';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import MediaOptionPanel from './MediaOptionPanel';
 import { MediaUploadWrapper } from './MediaOptions.styled';
 
@@ -13,14 +13,21 @@ export interface MediaOptionsProps {
 const MediaOptions = ({ mediaType }: MediaOptionsProps) => {
 	const { data, isLoading, isError, refetch } = useMediaOptions(mediaType);
 
+	const [, setLocation] = useLocation();
+
 	return (
 		<>
-			<PaddedLink to={`/media`}>{'<- Back'}</PaddedLink>
+			<PaddedLink to={`/`}>{'<- Back'}</PaddedLink>
 			{isLoading && <div>loading...</div>}
 			{isError && <div>no media found</div>}
 			{data?.paths.map((path) => (
 				<Accordion key={path} label={<Link to={`/media/${mediaType}/${path}`}>{path}</Link>}>
-					<MediaOptionPanel mediaType={mediaType} path={path} onDelete={refetch} />
+					<MediaOptionPanel
+						mediaType={mediaType}
+						path={path}
+						onDelete={refetch}
+						onNavigate={() => setLocation(`/media/${mediaType}/${path}`)}
+					/>
 				</Accordion>
 			))}
 			{mediaType && mediaTypes.includes(mediaType) && (

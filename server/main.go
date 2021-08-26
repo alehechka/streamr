@@ -6,6 +6,7 @@ import (
 	"streamr/endpoints"
 
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,10 +14,7 @@ import (
 
 const port string = "8080"
 
-func main() {
-	router := gin.Default()
-	router.Use(cors.Default())
-
+func ApiRouterGroup(router *gin.RouterGroup) {
 	router.POST("/upload/:mediaType/:fileName", endpoints.UploadMedia)
 
 	router.DELETE("/media/:mediaType/:fileName", endpoints.DeleteMedia)
@@ -25,6 +23,18 @@ func main() {
 	router.GET("/metadata/:mediaType/:fileName", endpoints.GetMediaMetadata)
 
 	router.StaticFS("/media", http.Dir(endpoints.MediaDir))
+}
+
+func main() {
+	router := gin.Default()
+	router.Use(cors.Default())
+
+	// Serve frontend static files
+	router.Use(static.Serve("/", static.LocalFile("./client", true)))
+
+	// Serve API endpoints
+	api := router.Group("/api")
+	ApiRouterGroup(api)
 
 	err := router.Run(":" + port)
 	if err != nil {
