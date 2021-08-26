@@ -9,6 +9,7 @@ import (
 	"mime/multipart"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/dhowden/tag"
 )
@@ -20,9 +21,14 @@ func SaveFileToPath(file *multipart.FileHeader, filePath string) (JsonMetadata, 
 	}
 	defer src.Close()
 
-	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		if err := os.Mkdir(filePath, fs.ModeAppend); err != nil {
-			return JsonMetadata{}, err
+	pathParts := strings.Split(filePath, "/")
+	pathBuilder := ""
+	for _, part := range pathParts {
+		pathBuilder= pathBuilder + part + "/"
+		if _, err := os.Stat(pathBuilder); os.IsNotExist(err) {
+			if err := os.Mkdir(pathBuilder, fs.ModeAppend); err != nil {
+				return JsonMetadata{}, err
+			}
 		}
 	}
 
@@ -31,10 +37,11 @@ func SaveFileToPath(file *multipart.FileHeader, filePath string) (JsonMetadata, 
 		return JsonMetadata{}, err
 	}
 	defer dst.Close()
+
 	if _, err = io.Copy(dst, src); err != nil {
 		return JsonMetadata{}, err
 	}
-
+	
 	return ExtractMetaData(file)
 }
 
