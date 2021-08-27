@@ -88,6 +88,9 @@ jobs:
           name: client
           path: client
 
+      - name: Checkout Repo
+        uses: actions/checkout@main
+
       - name: Download Server Artifact
         uses: actions/download-artifact@main
         with:
