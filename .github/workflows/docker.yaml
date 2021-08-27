@@ -1,0 +1,106 @@
+name: Deploy Docker Image to GHCR
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_ID: ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+jobs:
+  build-client:
+    name: Build CRA Client
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@main
+
+      - name: Setup Node.js (NPM)
+        uses: actions/setup-node@master
+        with:
+          node-version: '14.x'
+
+      - name: Use cached node_modules
+        uses: actions/cache@master
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            nodeModules-
+          working-directory: client
+
+      - name: Install dependencies
+        run: |
+          cd client
+          yarn install --frozen-lockfile
+        env:
+          CI: true
+
+      - name: Build
+        run: |
+          cd client
+          yarn build
+        env:
+          CI: true
+
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: client
+          path: client/build
+
+  build-server:
+    name: Build GoLang Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@main
+
+      - name: Set up Go 1.16
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.16
+        id: go
+
+      - name: Install Dependencies
+        run: go get -d -v
+        working-directory: server
+
+      - name: Build
+        run: CGO_ENABLED=0 GOOS=linux go build -a streamr
+        working-directory: server
+
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: server
+          path: server/streamr
+
+  docker:
+    name: Dockerize Application
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Client Artifact
+        uses: actions/download-artifact@main
+        with:
+          name: client
+          path: client
+
+      - name: Download Server Artifact
+        uses: actions/download-artifact@main
+        with:
+          name: server
+          path: server
+
+      - name: Build Docker Image
+        run: docker build -t ${{ env.RUN_REGION }}:latest ./
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push Image
+        run: |
+          docker push ${{ env.RUN_REGION }}:latest

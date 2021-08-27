@@ -26,7 +26,6 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"postbuild": "node scripts/post-build.js",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},
@@ -52,5 +51,6 @@
 		"@types/styled-components": "^5.1.12",
 		"fs-move": "^3.0.0",
 		"rimraf": "^3.0.2"
-	}
+	},
+	"homepage": "client"
 }

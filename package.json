@@ -1,0 +1,12 @@
+{
+	"name": "streamr",
+	"version": "1.0.0",
+	"main": "index.js",
+	"repository": "https://github.com/alehechka/streamr.git",
+	"author": "Adam Lehechka <42357034+alehechka@users.noreply.github.com>",
+	"license": "MIT",
+	"scripts": {
+		"docker:build": "docker build -t ghcr.io/alehechka/streamr:latest ./",
+		"docker:run": "docker run -d -p 8080:8080 ghcr.io/alehechka/streamr:latest"
+	}
+}

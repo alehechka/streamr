@@ -6,7 +6,7 @@ import (
 	"streamr/endpoints"
 
 	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/contrib/static"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,7 +30,7 @@ func main() {
 	router.Use(cors.Default())
 
 	// Serve frontend static files
-	router.Use(static.Serve("/", static.LocalFile("./client", true)))
+	router.Use(static.Serve("/client", static.LocalFile("./client", true)))
 
 	// Serve API endpoints
 	api := router.Group("/api")
