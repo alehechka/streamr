@@ -80,6 +80,9 @@ jobs:
 
   docker:
     name: Dockerize Application
+    needs:
+      - build-client
+      - build-server
     runs-on: ubuntu-latest
 
     steps:
