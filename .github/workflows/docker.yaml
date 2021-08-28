@@ -64,15 +64,13 @@ jobs:
         run: go get -d -v
         working-directory: server
 
+      - name: Run Tests
+        run: go test -tags mock ./...
+        working-directory: server
+
       - name: Build
         run: CGO_ENABLED=0 GOOS=linux go build -a streamr
         working-directory: server
-
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: server
-          path: server/streamr
 
   docker:
     name: Dockerize Application
@@ -91,14 +89,16 @@ jobs:
           name: client
           path: build/client
 
-      - name: Download Server Artifact
-        uses: actions/download-artifact@main
-        with:
-          name: server
-          path: build/server
+      - name: Install Server Dependencies
+        run: go get -d -v
+        working-directory: server
 
-      - name: Add execution privilege to go executable
-        run: chmod +x build/server
+      - name: Build Server
+        run: CGO_ENABLED=0 GOOS=linux go build -a streamr
+        working-directory: server
+
+      - name: Move Server executable
+        run: mv server/streamr build/server
 
       - name: Build Docker Image
         run: docker build -t ${{ env.IMAGE_ID }}:latest ./
