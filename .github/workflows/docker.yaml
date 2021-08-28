@@ -89,6 +89,12 @@ jobs:
           name: client
           path: build/client
 
+      - name: Set up Go 1.16
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.16
+        id: go
+
       - name: Install Server Dependencies
         run: go get -d -v
         working-directory: server
