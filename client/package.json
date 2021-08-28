@@ -26,6 +26,8 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
+		"local:build": "react-scripts build",
+		"postlocal:build": "node scripts/post-build.js",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},
@@ -52,5 +54,5 @@
 		"fs-move": "^3.0.0",
 		"rimraf": "^3.0.2"
 	},
-	"homepage": "client"
+	"proxy": "http://localhost:8080"
 }

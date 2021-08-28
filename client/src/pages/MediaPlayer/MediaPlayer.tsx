@@ -19,7 +19,7 @@ const MediaPlayer = ({ name, media }: Props) => {
 				<VideoWrapper>
 					<ReactHlsPlayer
 						playerRef={playerRef}
-						src={`${baseURL}/media/${media}/${name}/outputlist.m3u8`}
+						src={`${baseURL}media/${media}/${name}/outputlist.m3u8`}
 						hlsConfig={{
 							maxLoadingDelay: 4,
 							minAutoBitrate: 0,

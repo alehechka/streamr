@@ -7,6 +7,9 @@
 	"license": "MIT",
 	"scripts": {
 		"docker:build": "docker build -t ghcr.io/alehechka/streamr:latest ./",
-		"docker:run": "docker run -d -p 8080:8080 ghcr.io/alehechka/streamr:latest"
+		"docker:run": "docker run -d -p 8080:8080 ghcr.io/alehechka/streamr:latest",
+		"prelocal:build": "cd client && yarn local:build",
+		"local:build": "cd server && yarn build",
+		"postlocal:build": "cd server && ./streamr.exe"
 	}
 }

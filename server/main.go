@@ -3,16 +3,13 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 	"streamr/endpoints"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
-
-// configure the songs directory name and port
-
-const port string = "8080"
 
 func ApiRouterGroup(router *gin.RouterGroup) {
 	router.POST("/upload/:mediaType/:fileName", endpoints.UploadMedia)
@@ -25,18 +22,31 @@ func ApiRouterGroup(router *gin.RouterGroup) {
 	router.StaticFS("/media", http.Dir(endpoints.MediaDir))
 }
 
+func ClientRouterGroup(router *gin.Engine) {
+	router.GET("/media/*path", func(c *gin.Context) {
+		c.Request.URL.Path = "/"
+		router.HandleContext(c)
+	})
+	router.Use(static.Serve("/", static.LocalFile("./client", true)))
+}
+
 func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
 	// Serve frontend static files
-	router.Use(static.Serve("/client", static.LocalFile("./client", true)))
+	ClientRouterGroup(router)
 
 	// Serve API endpoints
 	api := router.Group("/api")
 	ApiRouterGroup(api)
 
-	err := router.Run(":" + port)
+	PORT := os.Getenv("PORT")
+	if PORT == "" {
+		PORT = "8080"
+	}
+
+	err := router.Run(":" + PORT)
 	if err != nil {
 		log.Fatal("Unable to start server")
 	}

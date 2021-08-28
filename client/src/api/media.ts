@@ -11,7 +11,7 @@ export type MediaType = typeof mediaTypes[number];
 
 const getMediaOptions = (mediaType?: MediaType) => {
 	if (!mediaType) return Promise.reject('No media type provided.');
-	return api.get<{ paths: string[] }>(`/media-finder/${mediaType}`).then((res) => res.data);
+	return api.get<{ paths: string[] }>(`media-finder/${mediaType}`).then((res) => res.data);
 };
 
 export const useMediaOptions = (mediaType?: MediaType) => {
@@ -28,7 +28,7 @@ const uploadMedia = (
 	formData.append('file', file);
 
 	return api
-		.post<{ message: string }>(`/upload/${mediaType}/${fileName}`, formData, {
+		.post<{ message: string }>(`upload/${mediaType}/${fileName}`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
@@ -65,7 +65,7 @@ export type MediaMetadata = {
 
 const getMediaMetadata = (mediaType?: MediaType, title?: string) => {
 	if (!mediaType || !title) return Promise.reject('No media type or title provided.');
-	return api.get<MediaMetadata>(`/metadata/${mediaType}/${title}`).then((res) => res.data);
+	return api.get<MediaMetadata>(`metadata/${mediaType}/${title}`).then((res) => res.data);
 };
 
 export const useMediaMetadata = (mediaType?: MediaType, title?: string) => {
@@ -74,7 +74,7 @@ export const useMediaMetadata = (mediaType?: MediaType, title?: string) => {
 
 const deleteMedia = (mediaType?: MediaType, title?: string) => {
 	if (!mediaType || !title) return Promise.reject('No media type or title provided.');
-	return api.delete(`/media/${mediaType}/${title}`).then((res) => res.data);
+	return api.delete(`media/${mediaType}/${title}`).then((res) => res.data);
 };
 
 export const useDeleteMedia = () => {

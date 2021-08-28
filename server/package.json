@@ -5,7 +5,7 @@
 	"author": "Adam Lehechka",
 	"license": "MIT",
 	"scripts": {
-		"start": "gin -p 8000 -a 8080 run streamr",
+		"start": "gin -p 8080 -a 8000 run streamr",
 		"build": "go build -a streamr"
 	}
 }
