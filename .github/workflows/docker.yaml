@@ -64,9 +64,9 @@ jobs:
         run: go get -d -v
         working-directory: server
 
-      - name: Run Tests
-        run: go test -tags mock ./...
-        working-directory: server
+      # - name: Run Tests
+      #   run: go test -tags mock ./...
+      #   working-directory: server
 
       - name: Build
         run: CGO_ENABLED=0 GOOS=linux go build -a streamr
