@@ -1,26 +1,5 @@
+import { Domain, domainSpecs } from 'components/Colors/Domains';
 import styled from 'styled-components';
-
-type DomainSpec = {
-	main: string;
-	hover: string;
-	disabled: string;
-};
-
-const domains = ['primary', 'danger'] as const;
-type Domain = typeof domains[number];
-
-const domainSpecs: Record<Domain, DomainSpec> = {
-	primary: {
-		main: 'DodgerBlue',
-		hover: 'RoyalBlue',
-		disabled: '#a6c2ed',
-	},
-	danger: {
-		main: '#eb4026',
-		hover: '#a82916',
-		disabled: '#e87d6d',
-	},
-} as const;
 
 interface IconButtonProps {
 	domain?: Domain;

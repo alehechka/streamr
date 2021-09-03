@@ -22,7 +22,8 @@ const uploadMedia = (
 	mediaType: MediaType,
 	fileName: string,
 	file: File,
-	onUploadProgress: (progressEvent: any) => void
+	onUploadProgress: (progressEvent: any) => void,
+	saveOriginal: boolean = false
 ) => {
 	let formData = new FormData();
 	formData.append('file', file);
@@ -31,6 +32,9 @@ const uploadMedia = (
 		.post<{ message: string }>(`upload/${mediaType}/${fileName}`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
+			},
+			params: {
+				saveOriginal,
 			},
 			onUploadProgress,
 		})
@@ -41,8 +45,9 @@ export const useUploadMedia = () => {
 	const [progress, setProgress] = useState<number>();
 	const handleProgressChange = (event: any) => setProgress(Math.round((100 * event.loaded) / event.total));
 
-	const mutation = useMutation((upload: { mediaType: MediaType; fileName: string; file: File }) =>
-		uploadMedia(upload.mediaType, upload.fileName, upload.file, handleProgressChange)
+	const mutation = useMutation(
+		(upload: { mediaType: MediaType; fileName: string; file: File; saveOriginal?: boolean }) =>
+			uploadMedia(upload.mediaType, upload.fileName, upload.file, handleProgressChange, upload.saveOriginal)
 	);
 
 	return [mutation, progress] as const;
