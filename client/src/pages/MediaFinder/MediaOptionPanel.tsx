@@ -5,6 +5,8 @@ import IconButton from 'components/IconButton';
 import { BsFillTrashFill } from 'react-icons/bs';
 import { FaPlay } from 'react-icons/fa';
 import { useEffect } from 'react';
+import Modal from 'components/Modal';
+import { useToggle } from '@alehechka/react-hooks';
 
 interface MediaOptionProps extends MediaOptionsProps {
 	path: string;
@@ -15,20 +17,19 @@ interface MediaOptionProps extends MediaOptionsProps {
 const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOptionProps) => {
 	const { data, isLoading, isError } = useMediaMetadata(mediaType, path);
 
-	const deleteMedia = useDeleteMedia();
+	const [isDeleteOpen, , openDeleteModal, closeDeleteModal] = useToggle();
 
+	const deleteMedia = useDeleteMedia();
 	const handleDelete = () => {
-		const confirmDelete = window.confirm(`Are you sure you want to delete ${path}?`);
-		if (confirmDelete) {
-			deleteMedia.mutate({ mediaType, title: path });
-		}
+		deleteMedia.mutate({ mediaType, title: path });
 	};
 
 	useEffect(() => {
 		if (deleteMedia.isSuccess && onDelete) {
+			closeDeleteModal();
 			onDelete();
 		}
-	}, [deleteMedia.isSuccess, onDelete]);
+	}, [deleteMedia.isSuccess, onDelete, closeDeleteModal]);
 
 	return (
 		<MediaOptionPanelWrapper>
@@ -44,9 +45,14 @@ const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOption
 					</IconButton>
 				)}
 				<IconButton domain='danger'>
-					<BsFillTrashFill size={20} onClick={handleDelete} />
+					<BsFillTrashFill size={20} onClick={openDeleteModal} />
 				</IconButton>
 			</ButtonWrapper>
+			<Modal isOpen={isDeleteOpen} afterClose={closeDeleteModal} onBackgroundClick={closeDeleteModal}>
+				Are you sure you want to delete?
+				<button onClick={closeDeleteModal}>cancel</button>
+				<button onClick={handleDelete}>delete</button>
+			</Modal>
 		</MediaOptionPanelWrapper>
 	);
 };
