@@ -3,6 +3,7 @@ package endpoints
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"streamr/utilities"
 
 	"github.com/gin-gonic/gin"
@@ -20,12 +21,19 @@ func UploadMedia(c *gin.Context) {
 		return
 	}
 
-	err = utilities.ConvertMediaToHSL(fmt.Sprintf("./%s/%s/%s", MediaDir, mediaType, fileName), file.Filename, "outputlist.m3u8")
+	filePath := fmt.Sprintf("./%s/%s/%s", MediaDir, mediaType, fileName)
+
+	err = utilities.ConvertMediaToHSL(filePath, file.Filename, "outputlist.m3u8")
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
+	}
+
+	saveOriginal := c.Query("saveOriginal")
+	if saveOriginal == "false" {
+		os.Remove(fmt.Sprintf("%s/%s", filePath, file.Filename))
 	}
 
 	c.JSON(http.StatusOK, gin.H{
