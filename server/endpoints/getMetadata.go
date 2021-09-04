@@ -16,7 +16,7 @@ func GetMediaMetadata(c *gin.Context) {
 	mediaType := c.Param("mediaType")
 	fileName := c.Param("fileName")
 
-	jsonFile, err := os.Open(fmt.Sprintf("./%s/%s/%s/%s", MediaDir, mediaType, fileName, "meta.json"))
+	jsonFile, err := os.Open(fmt.Sprintf("%s/%s/%s/%s", MediaDir, mediaType, fileName, "meta.json"))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 			"error": err.Error(),
