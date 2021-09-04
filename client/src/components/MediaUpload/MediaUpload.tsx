@@ -14,6 +14,7 @@ import { BsFillTrashFill } from 'react-icons/bs';
 import { FaFileUpload } from 'react-icons/fa';
 import IconButton from 'components/IconButton';
 import { useToggle } from '@alehechka/react-hooks';
+import Tooltip from 'components/Tooltip';
 
 interface MediaUploadProps {
 	mediaType?: MediaType;
@@ -95,10 +96,14 @@ const UploadMedia = ({ file, removeFile, mediaType, onUpload, invalidNames = [] 
 				disabled={mutation.isLoading || mutation.isSuccess}
 				invalid={isInvalid && !mutation.isSuccess}
 			/>
-			<Checkbox checked={saveOriginal} onChange={toggleSaveOriginal} tooltip='Save the original media file to disk.' />
-			<IconButton onClick={removeFile} disabled={mutation.isLoading}>
-				<BsFillTrashFill size={20} />
-			</IconButton>
+			<Tooltip text='Save the original media file to disk.'>
+				<Checkbox checked={saveOriginal} onChange={toggleSaveOriginal} />
+			</Tooltip>
+			<Tooltip text='Save'>
+				<IconButton onClick={removeFile} disabled={mutation.isLoading}>
+					<BsFillTrashFill size={20} />
+				</IconButton>
+			</Tooltip>
 			<IconButton onClick={handleSubmit} disabled={mutation.isLoading || progress === 100 || isInvalid}>
 				<FaFileUpload size={20} />
 			</IconButton>

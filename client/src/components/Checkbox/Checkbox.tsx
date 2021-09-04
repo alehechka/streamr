@@ -1,5 +1,4 @@
-import { Domain, domainSpecs } from 'components/Colors/Domains';
-import Tooltip from 'components/Tooltip';
+import { Domain, domainSpecs } from 'components/Colors';
 import { ChangeEvent, useCallback } from 'react';
 import styled from 'styled-components';
 
@@ -17,27 +16,18 @@ const StyledCheckbox = styled.input.attrs<Omit<StyledCheckboxProps, 'type'>>({ t
 `;
 
 interface CheckboxProps extends StyledCheckboxProps {
-	tooltip?: string;
 	checked: boolean;
 	onChange: (checked: boolean) => void;
 	disabled?: boolean;
 }
 
-const Checkbox = ({ tooltip, onChange, ...props }: CheckboxProps) => {
+const Checkbox = ({ onChange, ...props }: CheckboxProps) => {
 	const handleChange = useCallback(
 		(e: ChangeEvent<HTMLInputElement>) => {
 			return onChange(e.target.checked);
 		},
 		[onChange]
 	);
-
-	if (tooltip) {
-		return (
-			<Tooltip text={tooltip}>
-				<StyledCheckbox {...props} onChange={handleChange} />
-			</Tooltip>
-		);
-	}
 
 	return <StyledCheckbox {...props} onChange={handleChange} />;
 };

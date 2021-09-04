@@ -1,4 +1,4 @@
-import { Domain, domainSpecs } from 'components/Colors/Domains';
+import { Domain, domainSpecs } from 'components/Colors';
 import styled from 'styled-components';
 
 interface IconButtonProps {
