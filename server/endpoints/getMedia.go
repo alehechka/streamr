@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strings"
 
+	"github.com/facebookgo/symwalk"
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,7 +29,7 @@ func GetMediaDir(c *gin.Context) {
 
 func getMediaDir(root string) ([]string, error) {
 	folders := make([]string, 0)
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+	err := symwalk.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if info == nil {
 			return errors.New("root folder not found")
 		}

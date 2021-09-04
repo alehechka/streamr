@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/dhowden/tag v0.0.0-20201120070457-d52dcb253c63
+	github.com/facebookgo/symwalk v0.0.0-20150726040526-42004b9f3222 // indirect
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.7.3
