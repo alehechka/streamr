@@ -15,7 +15,7 @@ const MediaDir string = "media"
 
 func GetMediaDir(c *gin.Context) {
 	mediaType := c.Param("mediaType")
-	paths, err := getMediaDir(fmt.Sprintf(`%s\%s`, MediaDir, mediaType))
+	paths, err := WalkFilePath(fmt.Sprintf(`%s\%s`, MediaDir, mediaType))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -27,7 +27,7 @@ func GetMediaDir(c *gin.Context) {
 	})
 }
 
-func getMediaDir(root string) ([]string, error) {
+func WalkFilePath(root string) ([]string, error) {
 	folders := make([]string, 0)
 	err := symwalk.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if info == nil {

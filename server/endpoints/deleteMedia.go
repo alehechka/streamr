@@ -14,7 +14,7 @@ func DeleteMedia(c *gin.Context) {
 
 	path := fmt.Sprintf("%s/%s/%s", MediaDir, mediaType, fileName)
 
-	_, err := getMediaDir(path)
+	_, err := WalkFilePath(path)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
