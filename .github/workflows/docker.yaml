@@ -117,11 +117,3 @@ jobs:
 
       - name: Build Docker Image
         run: docker build --platform linux/amd64,linux/arm/v7 --push -t ${{ env.IMAGE_ID }}:latest .
-
-      - name: Print Images
-        run: |
-          docker images
-
-      - name: Push Image
-        run: |
-          docker push ${{ env.IMAGE_ID }}:latest
