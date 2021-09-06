@@ -1,11 +1,11 @@
 FROM alpine:3.7
 
-ADD build/server server
-ADD build/client client
+ADD build/server app/server
+ADD build/client app/client
 
 RUN apk add ffmpeg
 
 ENV PORT=8080
 
 EXPOSE 8080
-CMD ["/server"]
+CMD ["/app/server"]
