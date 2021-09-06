@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -46,7 +47,10 @@ func main() {
 		PORT = "8080"
 	}
 
-	err := router.Run(":" + PORT)
+	paths, err := endpoints.WalkFilePath(".")
+	fmt.Println(paths, err)
+
+	err = router.Run(":" + PORT)
 	if err != nil {
 		log.Fatal("Unable to start server")
 	}
