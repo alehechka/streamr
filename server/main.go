@@ -20,7 +20,7 @@ func ApiRouterGroup(router *gin.RouterGroup) {
 	router.GET("/media-finder/:mediaType", endpoints.GetMediaDir)
 	router.GET("/metadata/:mediaType/:fileName", endpoints.GetMediaMetadata)
 
-	router.StaticFS("/media", http.Dir(endpoints.MediaDir))
+	router.StaticFS("/media", http.Dir("app/media"))
 }
 
 func ClientRouterGroup(router *gin.Engine) {
@@ -47,7 +47,7 @@ func main() {
 		PORT = "8080"
 	}
 
-	paths, err := endpoints.WalkFilePath(".")
+	paths, err := endpoints.WalkFilePath(`.\app`)
 	fmt.Println(paths, err)
 
 	err = router.Run(":" + PORT)

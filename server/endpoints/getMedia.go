@@ -10,11 +10,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const MediaDir string = "app\\media"
-
 func GetMediaDir(c *gin.Context) {
 	mediaType := c.Param("mediaType")
-	paths, err := WalkFilePath(fmt.Sprintf(`%s\%s`, MediaDir, mediaType))
+	paths, err := WalkFilePath(fmt.Sprintf(`.\app\media\%s`, mediaType))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -29,8 +27,8 @@ func GetMediaDir(c *gin.Context) {
 func WalkFilePath(root string) ([]string, error) {
 	folders := make([]string, 0)
 	err := symwalk.Walk(root, func(path string, info os.FileInfo, err error) error {
-		fmt.Println(root, path, info)
 		if info == nil {
+			fmt.Println(root, path, info)
 			return errors.New("root folder not found")
 		}
 		fmt.Println(root, info.Name())

@@ -21,7 +21,7 @@ func UploadMedia(c *gin.Context) {
 		return
 	}
 
-	filePath := fmt.Sprintf("%s/%s/%s", MediaDir, mediaType, fileName)
+	filePath := fmt.Sprintf("app/media/%s/%s", mediaType, fileName)
 
 	err = utilities.ConvertMediaToHSL(filePath, file.Filename, "outputlist.m3u8")
 	if err != nil {
