@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/facebookgo/symwalk"
 	"github.com/gin-gonic/gin"
@@ -33,10 +32,9 @@ func WalkFilePath(root string) ([]string, error) {
 		if info == nil {
 			return errors.New("root folder not found")
 		}
-		subPath := strings.ReplaceAll(path, fmt.Sprintf(`%s\`, root), "")
-		pathParts := strings.Split(subPath, `\`)
-		if info.IsDir() && path != root && len(pathParts) <= 1 {
-			folders = append(folders, pathParts[0])
+		fmt.Println(root, info.Name())
+		if info.IsDir() && path != root {
+			folders = append(folders, info.Name())
 		}
 		return nil
 	})
