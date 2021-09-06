@@ -2,7 +2,6 @@ package endpoints
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -29,10 +28,8 @@ func WalkFilePath(root string) ([]string, error) {
 	folders := make([]string, 0)
 	err := symwalk.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if info == nil {
-			fmt.Println(root, path, info)
 			return errors.New("root folder not found")
 		}
-		fmt.Println(root, info.Name())
 		if info.IsDir() && path != root {
 			folders = append(folders, info.Name())
 		}
