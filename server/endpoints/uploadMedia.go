@@ -1,9 +1,9 @@
 package endpoints
 
 import (
-	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"streamr/utilities"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +21,7 @@ func UploadMedia(c *gin.Context) {
 		return
 	}
 
-	filePath := fmt.Sprintf("app/media/%s/%s", mediaType, fileName)
+	filePath := filepath.Join("app", "media", mediaType, fileName)
 
 	err = utilities.ConvertMediaToHSL(filePath, file.Filename, "outputlist.m3u8")
 	if err != nil {
@@ -33,7 +33,7 @@ func UploadMedia(c *gin.Context) {
 
 	saveOriginal := c.Query("saveOriginal")
 	if saveOriginal == "false" {
-		os.Remove(fmt.Sprintf("%s/%s", filePath, file.Filename))
+		os.Remove(filepath.Join(filePath, file.Filename))
 	}
 
 	c.JSON(http.StatusOK, gin.H{

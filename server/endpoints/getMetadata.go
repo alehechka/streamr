@@ -2,10 +2,10 @@ package endpoints
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"path/filepath"
 	"streamr/utilities"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +16,7 @@ func GetMediaMetadata(c *gin.Context) {
 	mediaType := c.Param("mediaType")
 	fileName := c.Param("fileName")
 
-	jsonFile, err := os.Open(fmt.Sprintf("app/media/%s/%s/%s", mediaType, fileName, "meta.json"))
+	jsonFile, err := os.Open(filepath.Join("app", "media", mediaType, fileName, "meta.json"))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 			"error": err.Error(),

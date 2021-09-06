@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/facebookgo/symwalk"
 	"github.com/gin-gonic/gin"
@@ -12,7 +13,7 @@ import (
 
 func GetMediaDir(c *gin.Context) {
 	mediaType := c.Param("mediaType")
-	paths, err := WalkFilePath(fmt.Sprintf(`.\app\media\%s`, mediaType))
+	paths, err := WalkFilePath(filepath.Join("app", "media", mediaType))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),

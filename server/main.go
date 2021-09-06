@@ -47,7 +47,7 @@ func main() {
 		PORT = "8080"
 	}
 
-	paths, err := endpoints.WalkFilePath(`.\app`)
+	paths, err := endpoints.WalkFilePath("app")
 	fmt.Println(paths, err)
 
 	err = router.Run(":" + PORT)

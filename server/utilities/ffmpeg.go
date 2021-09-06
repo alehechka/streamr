@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"os/exec"
+	"path/filepath"
 )
 
 func ConvertMediaToHSL(filePath, fileName, outputName string) error {
 
 	cmd := exec.Command(
 		"ffmpeg",
-		"-i", fmt.Sprintf("%s/%s", filePath, fileName),
+		"-i", filepath.Join(filePath, fileName),
 		"-codec:", "copy",
 		"-start_number", "0",
 		"-hls_time", "10",
