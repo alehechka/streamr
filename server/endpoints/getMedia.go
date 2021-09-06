@@ -29,6 +29,7 @@ func GetMediaDir(c *gin.Context) {
 func WalkFilePath(root string) ([]string, error) {
 	folders := make([]string, 0)
 	err := symwalk.Walk(root, func(path string, info os.FileInfo, err error) error {
+		fmt.Println(root, path, info)
 		if info == nil {
 			return errors.New("root folder not found")
 		}
