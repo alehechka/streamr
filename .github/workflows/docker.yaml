@@ -111,18 +111,10 @@ jobs:
         uses: actions/download-artifact@main
         with:
           name: server-${{ matrix.arch }}
-          path: build/server
-
-      - name: List build directory
-        run: ls -alR
-        working-directory: build
+          path: build
 
       - name: Extract Tar files
         run: tar -xvf server.tar server
-        working-directory: build
-
-      - name: List build directory
-        run: ls -al
         working-directory: build
 
       - name: Set up Docker Buildx
