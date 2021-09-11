@@ -102,14 +102,10 @@ jobs:
           path: build/client
 
       - name: Download Server Tar Artifact
-        uses: actions/download-artifact@main
+        uses: alehechka/download-tartifact@main
         with:
           name: server-${{ matrix.arch }}
           path: build
-
-      - name: Extract Tar files
-        run: tar -xvf artifact.tar
-        working-directory: build
 
       - name: Set up Docker Buildx
         id: buildx
