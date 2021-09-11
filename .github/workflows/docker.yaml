@@ -108,7 +108,7 @@ jobs:
           path: build/server.tar
 
       - name: Extract Tar files
-        run: tar -xvf server.tar
+        run: tar -xvf server.tar server
         working-directory: build
 
       - name: List build directory
