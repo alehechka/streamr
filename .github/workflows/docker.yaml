@@ -75,17 +75,11 @@ jobs:
         run: CGO_ENABLED=0 GOOS=linux GOARCH=${{ matrix.arch }} go build -a streamr
         working-directory: server
 
-      - name: 'Tar files'
-        run: |
-          mv streamr server
-          tar -cvf server.tar server
-        working-directory: server
-
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v2
+      - name: 'Upload Tar Artifact'
+        uses: alehechka/upload-tartifact@main
         with:
           name: server-${{ matrix.arch }}
-          path: server/server.tar
+          path: server/streamr
 
   dockerize:
     name: Dockerize ${{ matrix.arch }} Application
@@ -114,7 +108,7 @@ jobs:
           path: build
 
       - name: Extract Tar files
-        run: tar -xvf server.tar server
+        run: tar -xvf server.tar
         working-directory: build
 
       - name: Set up Docker Buildx

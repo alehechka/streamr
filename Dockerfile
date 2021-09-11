@@ -1,6 +1,6 @@
 FROM alpine:3.7
 
-ADD build/server app/server
+ADD build/streamr app/server
 ADD build/client app/client
 
 RUN apk add ffmpeg
