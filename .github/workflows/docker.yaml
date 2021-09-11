@@ -69,8 +69,17 @@ jobs:
       #   working-directory: server
 
       - name: Build
-        run: CGO_ENABLED=0 GOOS=linux go build -a streamr
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a streamr
         working-directory: server
+
+      - name: 'Tar files'
+        run: tar -cvf server.tar /server/streamr
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: server
+          path: server.tar
 
   docker-amd:
     name: Dockerize amd64 Application
@@ -89,22 +98,19 @@ jobs:
           name: client
           path: build/client
 
-      - name: Set up Go 1.16
-        uses: actions/setup-go@v1
+      - name: Download Server Tar Artifact
+        uses: actions/download-artifact@main
         with:
-          go-version: 1.16
-        id: go
+          name: server
+          path: build/server.tar
 
-      - name: Install Server Dependencies
-        run: go get -d -v
-        working-directory: server
+      - name: Extract Tar files
+        run: tar -xvf server.tar
+        working-directory: build
 
-      - name: Build Server
-        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a streamr
-        working-directory: server
-
-      - name: Move Server executable
-        run: mv server/streamr build/server
+      - name: List build directory
+        run: ls --al
+        working-directory: build
 
       - name: Set up Docker Buildx
         id: buildx
