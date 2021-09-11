@@ -108,7 +108,7 @@ jobs:
           path: build
 
       - name: Extract Tar files
-        run: tar -xvf server.tar
+        run: tar -xvf artifact.tar
         working-directory: build
 
       - name: Set up Docker Buildx
