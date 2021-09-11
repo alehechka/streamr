@@ -111,10 +111,10 @@ jobs:
         uses: actions/download-artifact@main
         with:
           name: server-${{ matrix.arch }}
-          path: build/server.tar
+          path: build/server
 
       - name: List build directory
-        run: ls -al
+        run: ls -alR
         working-directory: build
 
       - name: Extract Tar files
