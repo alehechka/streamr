@@ -82,7 +82,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: server
-          path: server.tar
+          path: server/server.tar
 
   docker-amd:
     name: Dockerize amd64 Application
