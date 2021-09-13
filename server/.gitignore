@@ -2,6 +2,7 @@
 **/media/songs/**
 **/media/shows/**
 **/media/mp4/**
+**/media/mp3/**
 gin-bin.exe
 client/
 ffmpeg

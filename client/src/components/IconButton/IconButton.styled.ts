@@ -6,7 +6,7 @@ interface IconButtonProps {
 }
 
 const IconButton = styled.button<IconButtonProps>`
-	background-color: ${({ domain = 'primary' }) => domainSpecs[domain].main};
+	background-color: ${({ domain = 'default' }) => domainSpecs[domain].main};
 	border: none;
 	color: white;
 
@@ -21,11 +21,11 @@ const IconButton = styled.button<IconButtonProps>`
 
 	&:hover,
 	:focus {
-		background-color: ${({ domain = 'primary' }) => domainSpecs[domain].hover};
+		background-color: ${({ domain = 'default' }) => domainSpecs[domain].hover};
 	}
 
 	&:disabled {
-		background-color: ${({ domain = 'primary' }) => domainSpecs[domain].disabled};
+		background-color: ${({ domain = 'default' }) => domainSpecs[domain].disabled};
 		cursor: not-allowed;
 	}
 `;

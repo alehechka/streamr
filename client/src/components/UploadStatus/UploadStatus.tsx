@@ -5,6 +5,10 @@ interface Props {
 }
 
 const UploadStatus = ({ percent }: Props) => {
+	if (percent === undefined) {
+		return <></>;
+	}
+
 	return (
 		<UploadStatusWrapper>
 			{percent !== undefined && <p>{percent}%</p>}

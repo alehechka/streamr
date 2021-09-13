@@ -1,12 +1,14 @@
-import { MediaMetadata, useDeleteMedia, useMediaMetadata } from 'api/media';
+import { MediaMetadata, useDeleteMedia, useDownloadMedia, useMediaMetadata } from 'api/media';
 import { MediaOptionsProps } from './MediaOptions';
 import styled from 'styled-components';
 import IconButton from 'components/IconButton';
 import { BsFillTrashFill } from 'react-icons/bs';
+import { BiDownload } from 'react-icons/bi';
 import { FaPlay } from 'react-icons/fa';
 import { useEffect } from 'react';
 import Modal from 'components/Modal';
 import { useToggle } from '@alehechka/react-hooks';
+import UploadStatus from 'components/UploadStatus';
 
 interface MediaOptionProps extends MediaOptionsProps {
 	path: string;
@@ -22,6 +24,13 @@ const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOption
 	const deleteMedia = useDeleteMedia();
 	const handleDelete = () => {
 		deleteMedia.mutate({ mediaType, title: path });
+	};
+
+	const [downloadMedia, downloadProgress] = useDownloadMedia();
+	const handleDownload = () => {
+		if (mediaType && path) {
+			downloadMedia.mutate({ mediaType, fileName: path });
+		}
 	};
 
 	useEffect(() => {
@@ -44,6 +53,10 @@ const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOption
 						<FaPlay size={20} onClick={onNavigate} />
 					</IconButton>
 				)}
+				<IconButton disabled={downloadMedia.isLoading}>
+					<BiDownload size={20} onClick={handleDownload} />
+				</IconButton>
+				<UploadStatus percent={downloadProgress} />
 				<IconButton domain='danger'>
 					<BsFillTrashFill size={20} onClick={openDeleteModal} />
 				</IconButton>

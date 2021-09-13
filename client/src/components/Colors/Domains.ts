@@ -4,7 +4,7 @@ export type DomainSpec = {
 	disabled: string;
 };
 
-export const domains = ['primary', 'danger'] as const;
+export const domains = ['primary', 'danger', 'default'] as const;
 export type Domain = typeof domains[number];
 
 export const domainSpecs: Record<Domain, DomainSpec> = {
@@ -17,5 +17,10 @@ export const domainSpecs: Record<Domain, DomainSpec> = {
 		main: '#eb4026',
 		hover: '#a82916',
 		disabled: '#e87d6d',
+	},
+	default: {
+		main: '#abaaa7',
+		hover: '#757472',
+		disabled: '#d1d0cd',
 	},
 } as const;

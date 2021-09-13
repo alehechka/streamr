@@ -8,20 +8,20 @@ Commits to `main` will use GitHub Actions to run an automatic build and deployme
 
 ```
 amd64
-docker pull ghcr.io/alehechka/streamr:latest
+docker pull ghcr.io/alehechka/streamr:amd64
 
 arm/v7
-docker pull ghcr.io/alehechka/streamr:rasbian
+docker pull ghcr.io/alehechka/streamr:arm
 ```
 
 To run the Docker image, it is required to mount a volume to the container to be able to retain any media upload via the upload process on the frontend. This can done when starting the container as follows:
 
 ```
 amd64
-docker run -d --rm -p 8080:8080 -v path/to/media:/app/media ghcr.io/alehechka/streamr:latest
+docker run -d --rm -p 8080:8080 -v path/to/media:/app/media ghcr.io/alehechka/streamr:amd64
 
 arm/v7
-docker run -d --rm -p 8080:8080 -v ~/path/to/media:/app/media ghcr.io/alehechka/streamr:rasbian
+docker run -d --rm -p 8080:8080 -v ~/path/to/media:/app/media ghcr.io/alehechka/streamr:arm
 ```
 
 ---

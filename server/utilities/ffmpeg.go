@@ -1,8 +1,8 @@
 package utilities
 
 import (
-	"bytes"
 	"fmt"
+	"io"
 	"os/exec"
 	"path/filepath"
 )
@@ -17,19 +17,40 @@ func ConvertMediaToHSL(filePath, fileName, outputName string) error {
 		"-hls_time", "10",
 		"-hls_list_size", "0",
 		"-f", "hls",
-		fmt.Sprintf("%s/%s", filePath, outputName),
+		filepath.Join(filePath, outputName),
 	)
 
-	var out bytes.Buffer
-	var stderr bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &stderr
-	err := cmd.Run()
-	if err != nil {
-		// fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
-		return err
+	// cmd.Stdout = os.Stdout // uncomment to view output
+	// cmd.Stderr = os.Stderr // uncomment to view errors
+
+	return cmd.Run()
+}
+
+func ConvertHSLToMedia(filePath, fileName, outputName string) error {
+
+	cmd := exec.Command(
+		"ffmpeg",
+		"-i", filepath.Join(filePath, fileName),
+		"-acodec", "copy",
+		"-vcodec", "copy",
+		filepath.Join(filePath, outputName),
+	)
+
+	stdin, err := cmd.StdinPipe()
+    if err != nil {
+        return err
+    }
+    defer stdin.Close()
+
+	// cmd.Stdout = os.Stdout // uncomment to view output
+	// cmd.Stderr = os.Stderr // uncomment to view errors
+
+	if err := cmd.Start(); err != nil {
+		fmt.Println("Error occured:", err)
 	}
-	// fmt.Println("Result: " + out.String())
+
+	io.WriteString(stdin, "y\n")
+	cmd.Wait()
 
 	return nil
 }

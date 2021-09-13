@@ -104,7 +104,11 @@ const UploadMedia = ({ file, removeFile, mediaType, onUpload, invalidNames = [] 
 					<BsFillTrashFill size={20} />
 				</IconButton>
 			</Tooltip>
-			<IconButton onClick={handleSubmit} disabled={mutation.isLoading || progress === 100 || isInvalid}>
+			<IconButton
+				onClick={handleSubmit}
+				disabled={mutation.isLoading || progress === 100 || isInvalid}
+				domain='primary'
+			>
 				<FaFileUpload size={20} />
 			</IconButton>
 			<UploadStatus percent={progress} />
