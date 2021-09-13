@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"streamr/utilities"
 
 	"github.com/gin-gonic/gin"
@@ -56,5 +57,6 @@ func WriteFileToResponse(c *gin.Context, mediaType, folderPath, fileName string)
 
 	c.Header("Content-Description", "File Transfer")
 	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fi.Name()))
+	c.Header("Content-Length", strconv.Itoa(int(fi.Size())))
 	c.Data(http.StatusOK, "application/octet-stream", b)
 }
