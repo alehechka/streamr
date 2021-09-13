@@ -1,7 +1,8 @@
 package utilities
 
 import (
-	"bytes"
+	"fmt"
+	"io"
 	"os/exec"
 	"path/filepath"
 )
@@ -19,18 +20,10 @@ func ConvertMediaToHSL(filePath, fileName, outputName string) error {
 		filepath.Join(filePath, outputName),
 	)
 
-	var out bytes.Buffer
-	var stderr bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &stderr
-	err := cmd.Run()
-	if err != nil {
-		// fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
-		return err
-	}
-	// fmt.Println("Result: " + out.String())
+	// cmd.Stdout = os.Stdout // uncomment to view output
+	// cmd.Stderr = os.Stderr // uncomment to view errors
 
-	return nil
+	return cmd.Run()
 }
 
 func ConvertHSLToMedia(filePath, fileName, outputName string) error {
@@ -43,16 +36,21 @@ func ConvertHSLToMedia(filePath, fileName, outputName string) error {
 		filepath.Join(filePath, outputName),
 	)
 
-	var out bytes.Buffer
-	var stderr bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &stderr
-	err := cmd.Run()
-	if err != nil {
-		// fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
-		return err
+	stdin, err := cmd.StdinPipe()
+    if err != nil {
+        return err
+    }
+    defer stdin.Close()
+
+	// cmd.Stdout = os.Stdout // uncomment to view output
+	// cmd.Stderr = os.Stderr // uncomment to view errors
+
+	if err := cmd.Start(); err != nil {
+		fmt.Println("Error occured:", err)
 	}
-	// fmt.Println("Result: " + out.String())
+
+	io.WriteString(stdin, "y\n")
+	cmd.Wait()
 
 	return nil
 }
