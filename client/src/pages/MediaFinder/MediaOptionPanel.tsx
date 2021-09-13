@@ -53,7 +53,7 @@ const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOption
 						<FaPlay size={20} onClick={onNavigate} />
 					</IconButton>
 				)}
-				<IconButton domain='danger' disabled={downloadMedia.isLoading}>
+				<IconButton disabled={downloadMedia.isLoading}>
 					<BiDownload size={20} onClick={handleDownload} />
 				</IconButton>
 				<UploadStatus percent={downloadProgress} />
