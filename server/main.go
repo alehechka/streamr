@@ -13,6 +13,7 @@ import (
 
 func ApiRouterGroup(router *gin.RouterGroup) {
 	router.POST("/upload/:mediaType/:fileName", endpoints.UploadMedia)
+	router.GET("/download/:mediaType/:fileName", endpoints.DownloadMedia)
 
 	router.DELETE("/media/:mediaType/:fileName", endpoints.DeleteMedia)
 
