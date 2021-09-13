@@ -46,6 +46,7 @@ func SaveFileToPath(file *multipart.FileHeader, filePath string) (JsonMetadata, 
 }
 
 type JsonMetadata struct {
+	FileName string `json:"fileName"`
 	Format tag.Format `json:"format"`
 	FileType tag.FileType `json:"fileType"`
 
@@ -77,6 +78,7 @@ func ExtractMetaData(file *multipart.FileHeader) (JsonMetadata, error) {
 	track, _ := m.Track()
 
 	meta := JsonMetadata{
+		FileName: file.Filename,
 		Format: m.Format(),
 		FileType: m.FileType(),
 
@@ -108,4 +110,26 @@ func WriteMetadataToFile(meta JsonMetadata, filePath string) (error) {
 	}
  
 	return ioutil.WriteFile(filePath, file, 0644)
+}
+
+func GetMetaData(mediaType, fileName string) (JsonMetadata, error) {
+	var meta JsonMetadata
+
+	jsonFile, err := os.Open(filepath.Join("app", "media", mediaType, fileName, "meta.json"))
+	if err != nil {
+		return meta, err
+	}
+	defer jsonFile.Close()
+
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	if err != nil {
+		return meta, err
+	}
+	
+	err = json.Unmarshal(byteValue, &meta)
+	if err != nil {
+		return meta, err
+	}
+
+	return meta, nil
 }

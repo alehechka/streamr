@@ -23,7 +23,7 @@ func UploadMedia(c *gin.Context) {
 
 	filePath := filepath.Join("app", "media", mediaType, fileName)
 
-	err = utilities.ConvertMediaToHSL(filePath, file.Filename, "outputlist.m3u8")
+	err = utilities.ConvertMediaToHSL(filePath, file.Filename, HSL_OUTPUT_SEED_FILE)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
