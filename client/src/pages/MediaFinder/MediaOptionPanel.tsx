@@ -61,7 +61,7 @@ const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOption
 					<BsFillTrashFill size={20} onClick={openDeleteModal} />
 				</IconButton>
 			</ButtonWrapper>
-			<Modal isOpen={isDeleteOpen} afterClose={closeDeleteModal} onBackgroundClick={closeDeleteModal}>
+			<Modal isOpen={isDeleteOpen} onClose={closeDeleteModal}>
 				Are you sure you want to delete?
 				<button onClick={closeDeleteModal}>cancel</button>
 				<button onClick={handleDelete}>delete</button>
