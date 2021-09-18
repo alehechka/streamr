@@ -25,6 +25,6 @@ export const Dropdown = styled(motion.section)`
 `;
 
 export const dropIn: Variants = {
-	open: { opacity: 1, height: 'auto' },
-	collapsed: { opacity: 0, height: 0 },
+	open: { opacity: 1, height: 'auto', scale: 1 },
+	collapsed: { opacity: 0, height: 0, scale: 0.8 },
 };
