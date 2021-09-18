@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import ReactDOM from 'react-dom';
 import StyledBackdrop from './backdrop.styled';
 
 interface BackdropProps {
@@ -6,10 +7,11 @@ interface BackdropProps {
 }
 
 const Backdrop: FC<BackdropProps> = ({ children, onClick }) => {
-	return (
+	return ReactDOM.createPortal(
 		<StyledBackdrop onClick={onClick} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
 			{children}
-		</StyledBackdrop>
+		</StyledBackdrop>,
+		document.body
 	);
 };
 
