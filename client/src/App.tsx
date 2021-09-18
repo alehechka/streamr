@@ -12,6 +12,7 @@ const App = () => {
 
 	return (
 		<AppWrapper>
+			<MediaUploadModal />
 			<ContentWrapper>
 				<QueryClientProvider client={queryClient}>
 					<Route path='/'>{MediaFinder}</Route>
@@ -21,7 +22,6 @@ const App = () => {
 					</Route>
 				</QueryClientProvider>
 			</ContentWrapper>
-			<MediaUploadModal />
 		</AppWrapper>
 	);
 };

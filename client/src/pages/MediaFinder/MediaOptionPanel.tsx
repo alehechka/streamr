@@ -49,16 +49,16 @@ const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOption
 			</div>
 			<ButtonWrapper>
 				{onNavigate && (
-					<IconButton domain='primary'>
-						<FaPlay size={20} onClick={onNavigate} />
+					<IconButton domain='primary' onClick={onNavigate}>
+						<FaPlay size={20} />
 					</IconButton>
 				)}
-				<IconButton disabled={downloadMedia.isLoading}>
-					<BiDownload size={20} onClick={handleDownload} />
+				<IconButton pending={downloadMedia.isLoading} onClick={handleDownload}>
+					<BiDownload size={20} />
 				</IconButton>
 				<UploadStatus percent={downloadProgress} />
-				<IconButton domain='danger'>
-					<BsFillTrashFill size={20} onClick={openDeleteModal} />
+				<IconButton domain='danger' onClick={openDeleteModal}>
+					<BsFillTrashFill size={20} />
 				</IconButton>
 			</ButtonWrapper>
 			<Modal isOpen={isDeleteOpen} onExit={closeDeleteModal} label={`Delete ${path}`}>
@@ -106,6 +106,7 @@ const ButtonWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
+	align-items: center;
 `;
 
 export default MediaOptionPanel;

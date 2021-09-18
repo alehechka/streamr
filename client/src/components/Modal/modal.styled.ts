@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { motion, Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const StyledModal = styled(motion.div)`
 	max-width: min(700px, 90%);
