@@ -8,11 +8,7 @@ const ProgressBar = ({ percent, loading }: Props) => {
 		return <></>;
 	}
 
-	return (
-		<progress value={percent} max={100}>
-			{percent}%
-		</progress>
-	);
+	return <progress value={percent}>{percent}%</progress>;
 };
 
 export default ProgressBar;
