@@ -14,7 +14,7 @@ const StyledModal = styled(motion.div)`
 	align-items: center;
 `;
 
-export const ModalHeader = styled.div`
+export const ModalHeader = styled.header`
 	width: 100%;
 	padding: 25px 0;
 	display: flex;
@@ -22,13 +22,24 @@ export const ModalHeader = styled.div`
 	align-items: center;
 `;
 
-export const ModalHeaderActions = styled.div`
+export const ModalActions = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
 	padding-left: 20px;
 	margin-left: auto;
+	gap: 10px;
+`;
+
+export const ModalFooter = styled.footer`
+	margin-top: auto;
+
+	width: 100%;
+	padding: 25px 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 `;
 
 export default StyledModal;
