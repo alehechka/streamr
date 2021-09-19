@@ -2325,6 +2325,11 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
+"@wedgekit/types@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@wedgekit/types/-/types-1.0.1.tgz#5521d6689dbb8050f94a76f7c8bd610098b4930a"
+  integrity sha512-ZvRZ8VS6KPiqHFGPLrETx8/wtGpZ0QgyHlZ/SiTVywyfBlemL/v2pV8o/wO15HYaqUioGGszoWtvemrUu/Vd5g==
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"

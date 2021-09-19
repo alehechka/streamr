@@ -54,6 +54,7 @@
 	"devDependencies": {
 		"@types/styled-components": "^5.1.12",
 		"@types/styled-react-modal": "^1.2.1",
+		"@wedgekit/types": "^1.0.1",
 		"fs-move": "^3.0.0",
 		"rimraf": "^3.0.2"
 	},
