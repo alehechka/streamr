@@ -9,7 +9,7 @@ export interface StyledIconButtonProps {
 
 const IconButton = styled(motion.button)<StyledIconButtonProps>`
 	background-color: ${({ domain = 'default' }) => domainSpecs[domain].main};
-	color: white;
+	color: ${({ domain = 'default' }) => domainSpecs[domain].color};
 	border: none;
 
 	display: flex;
