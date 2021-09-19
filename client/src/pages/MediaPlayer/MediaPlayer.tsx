@@ -1,5 +1,5 @@
 import { baseURL } from 'api';
-import { PaddedLink } from 'components/StyledLink';
+import StyledLink from 'components/Link/link.styled';
 import { useRef } from 'react';
 import ReactHlsPlayer from 'react-hls-player';
 import styled from 'styled-components';
@@ -14,7 +14,7 @@ const MediaPlayer = ({ name, media }: Props) => {
 
 	return (
 		<Wrapper>
-			<PaddedLink to={`/media/${media}`}>{'<- Back'}</PaddedLink>
+			<StyledLink to={`/media/${media}`}>{'<- Back'}</StyledLink>
 			<SizeWrapper>
 				<VideoWrapper>
 					<ReactHlsPlayer

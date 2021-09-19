@@ -14,10 +14,6 @@ export const UploadMediaMapWrapper = styled.div`
 	width: 100%;
 `;
 
-export const StyledButton = styled.button`
-	text-transform: capitalize;
-`;
-
 // UploadMedia
 
 export const UploadMediaWrapper = styled.div`

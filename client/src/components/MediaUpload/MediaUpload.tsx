@@ -2,16 +2,12 @@ import { MediaType, useUploadMedia } from 'api/media';
 import Input from 'components/Input';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import ProgressBar from '../ProgressBar';
-import {
-	FileNameWrapper,
-	MediaUploadWrapper,
-	StyledButton,
-	UploadMediaMapWrapper,
-	UploadMediaWrapper,
-} from './MediaUpload.styled';
+import { FileNameWrapper, MediaUploadWrapper, UploadMediaMapWrapper, UploadMediaWrapper } from './MediaUpload.styled';
 import { BsFillTrashFill } from 'react-icons/bs';
 import { FaFileUpload } from 'react-icons/fa';
 import IconButton from 'components/IconButton';
+import Button from 'components/Button';
+import Text from 'components/Text';
 
 interface MediaUploadProps {
 	mediaType?: MediaType;
@@ -36,7 +32,7 @@ const MediaUpload = ({ mediaType, onUpload, fileOptions = ['.mp4', '.mp3'], inva
 
 	return (
 		<MediaUploadWrapper>
-			<StyledButton onClick={() => fileInputRef.current?.click()}>Upload {mediaType}</StyledButton>
+			<Button onClick={() => fileInputRef.current?.click()}>Upload {mediaType}</Button>
 			<input type='file' accept={fileOptions.join(',')} onChange={handleChange} hidden ref={fileInputRef} />
 			<UploadMediaMapWrapper>
 				{files.map((file, index) => (
@@ -84,7 +80,9 @@ const UploadMedia = ({ file, removeFile, mediaType, onUpload, invalidNames = [] 
 
 	return (
 		<UploadMediaWrapper>
-			<FileNameWrapper>{file.name}</FileNameWrapper>
+			<FileNameWrapper>
+				<Text>{file.name}</Text>
+			</FileNameWrapper>
 			<Input
 				value={fileName}
 				onChange={handleFileNameChange}

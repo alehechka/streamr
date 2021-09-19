@@ -1,8 +1,8 @@
 import { MediaType, mediaTypes, useMediaOptions } from 'api/media';
 import Accordion from 'components/Accordion';
+import StyledLink from 'components/Link/link.styled';
 import MediaUpload from 'components/MediaUpload';
-import { PaddedLink } from 'components/StyledLink';
-import { Link, useLocation } from 'wouter';
+import { useLocation } from 'wouter';
 import MediaOptionPanel from './MediaOptionPanel';
 import { MediaUploadWrapper } from './MediaOptions.styled';
 
@@ -17,11 +17,11 @@ const MediaOptions = ({ mediaType }: MediaOptionsProps) => {
 
 	return (
 		<>
-			<PaddedLink to={`/`}>{'<- Back'}</PaddedLink>
+			<StyledLink to={`/`}>{'<- Back'}</StyledLink>
 			{isLoading && <div>loading...</div>}
 			{isError && <div>no media found</div>}
 			{data?.paths.map((path) => (
-				<Accordion key={path} label={<Link to={`/media/${mediaType}/${path}`}>{path}</Link>}>
+				<Accordion key={path} label={<StyledLink to={`/media/${mediaType}/${path}`}>{path}</StyledLink>}>
 					<MediaOptionPanel
 						mediaType={mediaType}
 						path={path}

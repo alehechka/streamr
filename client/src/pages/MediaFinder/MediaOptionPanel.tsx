@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import Modal from 'components/Modal';
 import { useToggle } from '@alehechka/react-hooks';
 import ProgressBar from 'components/ProgressBar';
+import Text from 'components/Text';
 
 interface MediaOptionProps extends MediaOptionsProps {
 	path: string;
@@ -43,8 +44,8 @@ const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOption
 	return (
 		<MediaOptionPanelWrapper>
 			<div>
-				{isLoading && <div>loading...</div>}
-				{isError && <div>no metadata found</div>}
+				{isLoading && <Text>loading...</Text>}
+				{isError && <Text>no metadata found</Text>}
 				<MediaMetadataPanel meta={data} />
 			</div>
 			<ButtonWrapper>
@@ -61,10 +62,15 @@ const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOption
 					<BsFillTrashFill size={20} />
 				</IconButton>
 			</ButtonWrapper>
-			<Modal isOpen={isDeleteOpen} onExit={closeDeleteModal} label={`Delete ${path}`}>
-				Are you sure you want to delete?
-				<button onClick={closeDeleteModal}>cancel</button>
-				<button onClick={handleDelete}>delete</button>
+			<Modal
+				isOpen={isDeleteOpen}
+				onExit={closeDeleteModal}
+				label={`Deleting ${path}`}
+				onCancel={closeDeleteModal}
+				onConfirm={handleDelete}
+				confirmLabel='Delete'
+			>
+				<Text>Are you sure you want to delete?</Text>
 			</Modal>
 		</MediaOptionPanelWrapper>
 	);
@@ -79,17 +85,17 @@ const MediaMetadataPanel = ({ meta }: MetadataProps) => {
 	return (
 		<>
 			{meta.title && (
-				<p>
-					Title: <b>{meta.title}</b>
+				<Text as='p'>
+					Title: <Text bold>{meta.title}</Text>
 					{meta.album && (
-						<>
+						<Text>
 							{' from '}
-							<b>{meta.album}</b>
-						</>
+							<Text bold>{meta.album}</Text>
+						</Text>
 					)}
-				</p>
+				</Text>
 			)}
-			{meta.artist && <p>Artist: {meta.artist}</p>}
+			{meta.artist && <Text as='p'>Artist: {meta.artist}</Text>}
 		</>
 	);
 };
