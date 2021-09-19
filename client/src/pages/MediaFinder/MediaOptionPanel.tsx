@@ -8,7 +8,7 @@ import { FaPlay } from 'react-icons/fa';
 import { useEffect } from 'react';
 import Modal from 'components/Modal';
 import { useToggle } from '@alehechka/react-hooks';
-import UploadStatus from 'components/UploadStatus';
+import ProgressBar from 'components/ProgressBar';
 
 interface MediaOptionProps extends MediaOptionsProps {
 	path: string;
@@ -56,7 +56,7 @@ const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOption
 				<IconButton pending={downloadMedia.isLoading} onClick={handleDownload}>
 					<BiDownload size={20} />
 				</IconButton>
-				<UploadStatus percent={downloadProgress} />
+				<ProgressBar percent={downloadProgress} loading={downloadMedia.isLoading} />
 				<IconButton domain='danger' onClick={openDeleteModal}>
 					<BsFillTrashFill size={20} />
 				</IconButton>

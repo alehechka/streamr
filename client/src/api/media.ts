@@ -96,13 +96,11 @@ const downloadMedia = (mediaType?: MediaType, title?: string, onDownloadProgress
 			onDownloadProgress: (progressEvent) => {
 				if (onDownloadProgress) {
 					const percentCompleted = Math.floor((progressEvent.loaded / progressEvent.total) * 100);
-					console.log(percentCompleted, progressEvent.loaded, progressEvent.total);
 					onDownloadProgress(percentCompleted);
 				}
 			},
 		})
 		.then((res) => {
-			console.log(res.headers);
 			const contentHeader = res.headers['content-disposition'];
 			FileDownload(res.data, contentHeader.split('=')[1]);
 		});

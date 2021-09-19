@@ -1,7 +1,7 @@
 import { MediaType, useUploadMedia } from 'api/media';
 import Input from 'components/Input';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import UploadStatus from '../UploadStatus';
+import ProgressBar from '../ProgressBar';
 import {
 	FileNameWrapper,
 	MediaUploadWrapper,
@@ -101,7 +101,7 @@ const UploadMedia = ({ file, removeFile, mediaType, onUpload, invalidNames = [] 
 			>
 				<FaFileUpload size={20} />
 			</IconButton>
-			<UploadStatus percent={progress} />
+			<ProgressBar percent={progress} loading={mutation.isLoading} />
 		</UploadMediaWrapper>
 	);
 };
