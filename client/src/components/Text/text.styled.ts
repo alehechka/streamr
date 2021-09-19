@@ -9,7 +9,7 @@ interface TextProps {
 	italic?: boolean;
 }
 
-const Text = styled.p<TextProps>`
+const Text = styled.span<TextProps>`
 	${FontFamilyMixin}
 	font-size: 16px;
 	color: gray;
