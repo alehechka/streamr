@@ -1,15 +1,12 @@
-import { mediaTypes } from 'api/media';
-import StyledLink from 'components/Link/link.styled';
+import MediaImage, { MediaImagesWrapper } from 'components/MediaImage';
+import { PopcornImage, RecordImage } from 'images';
 
 const MediaFinder = () => {
 	return (
-		<ul>
-			{mediaTypes.map((mediaType) => (
-				<li key={mediaType}>
-					<StyledLink to={`/media/${mediaType}`}>{mediaType}</StyledLink>
-				</li>
-			))}
-		</ul>
+		<MediaImagesWrapper>
+			<MediaImage src={PopcornImage} mediaType='movies' />
+			<MediaImage src={RecordImage} mediaType='songs' />
+		</MediaImagesWrapper>
 	);
 };
 
