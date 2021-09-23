@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import MediaOptions from 'pages/MediaFinder/MediaOptions';
 import { MediaType } from 'api/media';
 import AppWrapper, { ContentWrapper } from 'components/AppWrapper';
-import { MediaUploadModal } from 'components/Modal';
 
 const App = () => {
 	const queryClient = new QueryClient();
@@ -21,7 +20,6 @@ const App = () => {
 					</Route>
 				</QueryClientProvider>
 			</ContentWrapper>
-			<MediaUploadModal />
 		</AppWrapper>
 	);
 };

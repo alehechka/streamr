@@ -1,7 +1,9 @@
 import { MediaType, mediaTypes, useMediaOptions } from 'api/media';
 import Accordion from 'components/Accordion';
+import { MaxWidthContentWrapper } from 'components/AppWrapper';
 import StyledLink from 'components/Link/link.styled';
 import MediaUpload from 'components/MediaUpload';
+import { MediaUploadModal } from 'components/Modal';
 import { useLocation } from 'wouter';
 import MediaOptionPanel from './MediaOptionPanel';
 import { MediaUploadWrapper } from './MediaOptions.styled';
@@ -16,7 +18,7 @@ const MediaOptions = ({ mediaType }: MediaOptionsProps) => {
 	const [, setLocation] = useLocation();
 
 	return (
-		<>
+		<MaxWidthContentWrapper>
 			<StyledLink to={`/`}>{'<- Back'}</StyledLink>
 			{isLoading && <div>loading...</div>}
 			{isError && <div>no media found</div>}
@@ -40,7 +42,8 @@ const MediaOptions = ({ mediaType }: MediaOptionsProps) => {
 					/>
 				</MediaUploadWrapper>
 			)}
-		</>
+			<MediaUploadModal />
+		</MaxWidthContentWrapper>
 	);
 };
 

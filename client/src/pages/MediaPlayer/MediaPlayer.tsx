@@ -1,4 +1,5 @@
 import { baseURL } from 'api';
+import { MaxWidthContentWrapper } from 'components/AppWrapper';
 import StyledLink from 'components/Link/link.styled';
 import { useRef } from 'react';
 import ReactHlsPlayer from 'react-hls-player';
@@ -13,7 +14,7 @@ const MediaPlayer = ({ name, media }: Props) => {
 	const playerRef = useRef<HTMLVideoElement>(null);
 
 	return (
-		<Wrapper>
+		<MaxWidthContentWrapper>
 			<StyledLink to={`/media/${media}`}>{'<- Back'}</StyledLink>
 			<SizeWrapper>
 				<VideoWrapper>
@@ -31,11 +32,9 @@ const MediaPlayer = ({ name, media }: Props) => {
 					/>
 				</VideoWrapper>
 			</SizeWrapper>
-		</Wrapper>
+		</MaxWidthContentWrapper>
 	);
 };
-
-const Wrapper = styled.div``;
 
 const SizeWrapper = styled.div`
 	margin-top: 20px;
