@@ -1,14 +1,16 @@
 import { Domain, domainSpecs } from 'components/Colors';
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-interface IconButtonProps {
+export interface StyledIconButtonProps {
 	domain?: Domain;
+	pending?: boolean;
 }
 
-const IconButton = styled.button<IconButtonProps>`
+const IconButton = styled(motion.button)<StyledIconButtonProps>`
 	background-color: ${({ domain = 'default' }) => domainSpecs[domain].main};
+	color: ${({ domain = 'default' }) => domainSpecs[domain].color};
 	border: none;
-	color: white;
 
 	display: flex;
 	flex-direction: row;
@@ -22,11 +24,12 @@ const IconButton = styled.button<IconButtonProps>`
 	&:hover,
 	:focus {
 		background-color: ${({ domain = 'default' }) => domainSpecs[domain].hover};
+		outline: none;
 	}
 
 	&:disabled {
 		background-color: ${({ domain = 'default' }) => domainSpecs[domain].disabled};
-		cursor: not-allowed;
+		cursor: ${({ pending }) => (pending ? 'progress' : 'not-allowed')};
 	}
 `;
 

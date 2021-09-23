@@ -1,20 +1,13 @@
 import { MediaType, useUploadMedia } from 'api/media';
 import Input from 'components/Input';
-import Checkbox from 'components/Checkbox';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import UploadStatus from '../UploadStatus';
-import {
-	FileNameWrapper,
-	MediaUploadWrapper,
-	StyledButton,
-	UploadMediaMapWrapper,
-	UploadMediaWrapper,
-} from './MediaUpload.styled';
+import ProgressBar from '../ProgressBar';
+import { FileNameWrapper, MediaUploadWrapper, UploadMediaMapWrapper, UploadMediaWrapper } from './MediaUpload.styled';
 import { BsFillTrashFill } from 'react-icons/bs';
 import { FaFileUpload } from 'react-icons/fa';
 import IconButton from 'components/IconButton';
-import { useToggle } from '@alehechka/react-hooks';
-import Tooltip from 'components/Tooltip';
+import Button from 'components/Button';
+import Text from 'components/Text';
 
 interface MediaUploadProps {
 	mediaType?: MediaType;
@@ -39,7 +32,7 @@ const MediaUpload = ({ mediaType, onUpload, fileOptions = ['.mp4', '.mp3'], inva
 
 	return (
 		<MediaUploadWrapper>
-			<StyledButton onClick={() => fileInputRef.current?.click()}>Upload {mediaType}</StyledButton>
+			<Button onClick={() => fileInputRef.current?.click()}>Upload {mediaType}</Button>
 			<input type='file' accept={fileOptions.join(',')} onChange={handleChange} hidden ref={fileInputRef} />
 			<UploadMediaMapWrapper>
 				{files.map((file, index) => (
@@ -67,14 +60,12 @@ const UploadMedia = ({ file, removeFile, mediaType, onUpload, invalidNames = [] 
 
 	const [fileName, setFileName] = useState<string>(cleanName(file.name));
 
-	const [saveOriginal, toggleSaveOriginal] = useToggle();
-
 	const handleFileNameChange = (event: React.ChangeEvent<HTMLInputElement>) =>
 		setFileName(cleanName(event.target.value));
 
 	const [mutation, progress] = useUploadMedia();
 	const handleSubmit = () => {
-		if (mediaType) return mutation.mutate({ fileName, file, mediaType, saveOriginal });
+		if (mediaType) return mutation.mutate({ fileName, file, mediaType });
 	};
 
 	useEffect(() => {
@@ -89,21 +80,18 @@ const UploadMedia = ({ file, removeFile, mediaType, onUpload, invalidNames = [] 
 
 	return (
 		<UploadMediaWrapper>
-			<FileNameWrapper>{file.name}</FileNameWrapper>
+			<FileNameWrapper>
+				<Text>{file.name}</Text>
+			</FileNameWrapper>
 			<Input
 				value={fileName}
 				onChange={handleFileNameChange}
 				disabled={mutation.isLoading || mutation.isSuccess}
 				invalid={isInvalid && !mutation.isSuccess}
 			/>
-			<Tooltip text='Save the original media file to disk.'>
-				<Checkbox checked={saveOriginal} onChange={toggleSaveOriginal} />
-			</Tooltip>
-			<Tooltip text='Save'>
-				<IconButton onClick={removeFile} disabled={mutation.isLoading}>
-					<BsFillTrashFill size={20} />
-				</IconButton>
-			</Tooltip>
+			<IconButton onClick={removeFile} disabled={mutation.isLoading}>
+				<BsFillTrashFill size={20} />
+			</IconButton>
 			<IconButton
 				onClick={handleSubmit}
 				disabled={mutation.isLoading || progress === 100 || isInvalid}
@@ -111,7 +99,7 @@ const UploadMedia = ({ file, removeFile, mediaType, onUpload, invalidNames = [] 
 			>
 				<FaFileUpload size={20} />
 			</IconButton>
-			<UploadStatus percent={progress} />
+			<ProgressBar percent={progress} loading={mutation.isLoading} />
 		</UploadMediaWrapper>
 	);
 };

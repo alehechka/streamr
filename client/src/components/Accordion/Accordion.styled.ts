@@ -1,13 +1,13 @@
 import styled from 'styled-components';
+import { motion, Variants } from 'framer-motion';
 
-export const Wrap = styled.div<{ active?: boolean }>`
+export const Wrap = styled(motion.header)`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
 	text-align: center;
 	cursor: pointer;
-	background-color: ${({ active }) => (active ? '#ccc' : '#eee')};
 	padding: 18px;
 	border: none;
 	outline: none;
@@ -18,8 +18,13 @@ export const Wrap = styled.div<{ active?: boolean }>`
 	}
 `;
 
-export const Dropdown = styled.div<{ isOpen: boolean }>`
+export const Dropdown = styled(motion.section)`
 	padding: 0 18px;
 	background-color: white;
 	overflow: hidden;
 `;
+
+export const dropIn: Variants = {
+	open: { opacity: 1, height: 'auto', scale: 1 },
+	collapsed: { opacity: 0, height: 0, scale: 0.8 },
+};

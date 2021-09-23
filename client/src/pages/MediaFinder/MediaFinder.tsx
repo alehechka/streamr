@@ -1,17 +1,12 @@
-import { Link } from 'wouter';
-import { mediaTypes } from 'api/media';
+import MediaImage, { MediaImagesWrapper } from 'components/MediaImage';
+import { PopcornImage, RecordImage } from 'images';
 
 const MediaFinder = () => {
 	return (
-		<>
-			<ul>
-				{mediaTypes.map((mediaType) => (
-					<li key={mediaType}>
-						<Link to={`/media/${mediaType}`}>{mediaType}</Link>
-					</li>
-				))}
-			</ul>
-		</>
+		<MediaImagesWrapper>
+			<MediaImage src={PopcornImage} mediaType='movies' />
+			<MediaImage src={RecordImage} mediaType='songs' />
+		</MediaImagesWrapper>
 	);
 };
 
