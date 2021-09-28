@@ -2,7 +2,7 @@ version: '3'
 services:
   streamr:
     # Uncomment the desired architecture image
-    # image: ghcr.io/alehechka/streamr:amd64
+    image: ghcr.io/alehechka/streamr:amd64
     # image: ghcr.io/alehechka/streamr:arm
     container_name: streamr
     ports:
@@ -15,4 +15,4 @@ services:
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --schedule "59 11 * * *" --cleanup
+    command: --schedule "59 23 * * *" --cleanup

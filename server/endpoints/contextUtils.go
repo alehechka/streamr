@@ -5,7 +5,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strconv"
 	"streamr/utilities"
 
@@ -14,25 +13,37 @@ import (
 
 const HSL_OUTPUT_SEED_FILE = "outputlist.m3u8"
 
-func DownloadFile(c *gin.Context, mediaType, fileName string) (*multipart.FileHeader, utilities.JsonMetadata, error) {
+func DownloadFile(c *gin.Context, mediaType, fileName string) (*multipart.FileHeader, error) {
 	file, err := c.FormFile("file")
+	if err != nil {
+		return file, err
+	}
+
+	err = utilities.SaveFileToPath(file, utilities.JoinPath(mediaType, fileName))
+
+	return file, err
+}
+
+func DownloadFileWithMetadata(c *gin.Context, mediaType, fileName string) (*multipart.FileHeader, utilities.JsonMetadata, error)  {
+
+	file, err := DownloadFile(c, mediaType, fileName)
 	if err != nil {
 		return file, utilities.JsonMetadata{}, err
 	}
 
-	meta, err := utilities.SaveFileToPath(file, filepath.Join("app", "media", mediaType, fileName))
+	meta, err := utilities.ExtractMetaData(file)
 	if err != nil {
 		return file, meta, err
 	}
-	
-	err = utilities.WriteMetadataToFile(meta, filepath.Join("app", "media", mediaType, fileName, "meta.json"))
+
+	err = utilities.WriteMetadataToFile(meta, utilities.JoinPath(mediaType, fileName, "meta.json"))
 
 	return file, meta, err
 }
 
 func WriteFileToResponse(c *gin.Context, mediaType, folderPath, fileName string) {
 
-	file, err := os.Open(filepath.Join("app", "media", mediaType, folderPath, fileName))
+	file, err := os.Open(utilities.JoinPath(mediaType, folderPath, fileName))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),

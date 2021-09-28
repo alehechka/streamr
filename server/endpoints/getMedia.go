@@ -2,17 +2,20 @@ package endpoints
 
 import (
 	"errors"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"streamr/utilities"
 
-	"github.com/facebookgo/symwalk"
 	"github.com/gin-gonic/gin"
 )
 
 func GetMediaDir(c *gin.Context) {
 	mediaType := c.Param("mediaType")
-	paths, err := WalkFilePath(filepath.Join("app", "media", mediaType))
+	path := utilities.JoinPath(mediaType)
+	log.Println(path)
+	paths, err := WalkFilePath(path)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -26,7 +29,7 @@ func GetMediaDir(c *gin.Context) {
 
 func WalkFilePath(root string) ([]string, error) {
 	folders := make([]string, 0)
-	err := symwalk.Walk(root, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if info == nil {
 			return errors.New("root folder not found")
 		}

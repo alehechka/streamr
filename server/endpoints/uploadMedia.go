@@ -13,7 +13,7 @@ func UploadMedia(c *gin.Context) {
 	mediaType := c.Param("mediaType")
 	fileName := c.Param("fileName")
 
-	file, meta, err := DownloadFile(c, mediaType, fileName)
+	_, meta, err := DownloadFileWithMetadata(c, mediaType, fileName)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -21,9 +21,9 @@ func UploadMedia(c *gin.Context) {
 		return
 	}
 
-	filePath := filepath.Join("app", "media", mediaType, fileName)
+	filePath := utilities.JoinPath(mediaType, fileName)
 
-	err = utilities.ConvertMediaToHSL(filePath, file.Filename, HSL_OUTPUT_SEED_FILE)
+	err = utilities.ConvertMediaToHSL(filePath, meta.FileName, HSL_OUTPUT_SEED_FILE)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -33,7 +33,7 @@ func UploadMedia(c *gin.Context) {
 
 	saveOriginal := c.Query("saveOriginal")
 	if saveOriginal == "false" {
-		os.Remove(filepath.Join(filePath, file.Filename))
+		defer os.Remove(filepath.Join(filePath, meta.FileName))
 	}
 
 	c.JSON(http.StatusOK, gin.H{

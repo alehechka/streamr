@@ -21,7 +21,7 @@ func DownloadMedia(c *gin.Context) {
 		return
 	}
 
-	filePath := filepath.Join("app", "media", mediaType, fileName)
+	filePath := utilities.JoinPath(mediaType, fileName)
 	err = utilities.ConvertHSLToMedia(filePath, HSL_OUTPUT_SEED_FILE, meta.FileName)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -31,7 +31,7 @@ func DownloadMedia(c *gin.Context) {
 	}
 
 	WriteFileToResponse(c, mediaType, fileName, meta.FileName)
-	
-	os.Remove(filepath.Join(filePath, meta.FileName))
+
+	defer os.Remove(filepath.Join(filePath, meta.FileName))
 }
 

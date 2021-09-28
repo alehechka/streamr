@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"path/filepath"
+	"streamr/utilities"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,7 +13,7 @@ func DeleteMedia(c *gin.Context) {
 	mediaType := c.Param("mediaType")
 	fileName := c.Param("fileName")
 
-	path := filepath.Join("app", "media", mediaType, fileName)
+	path := utilities.JoinPath(mediaType, fileName)
 
 	_, err := WalkFilePath(path)
 	if err != nil {

@@ -14,10 +14,10 @@ import (
 	"github.com/dhowden/tag"
 )
 
-func SaveFileToPath(file *multipart.FileHeader, filePath string) (JsonMetadata, error) {
+func SaveFileToPath(file *multipart.FileHeader, filePath string) (error) {
 	src, err := file.Open()
 	if err != nil {
-		return JsonMetadata{}, err
+		return err
 	}
 	defer src.Close()
 
@@ -27,22 +27,22 @@ func SaveFileToPath(file *multipart.FileHeader, filePath string) (JsonMetadata, 
 		pathBuilder= pathBuilder + part + "/"
 		if _, err := os.Stat(pathBuilder); os.IsNotExist(err) {
 			if err := os.Mkdir(pathBuilder, fs.ModeAppend); err != nil {
-				return JsonMetadata{}, err
+				return err
 			}
 		}
 	}
 
 	dst, err := os.Create(filepath.Join(filePath, filepath.Base(file.Filename))) // dir is directory where you want to save file.
 	if err != nil {
-		return JsonMetadata{}, err
+		return err
 	}
 	defer dst.Close()
 
 	if _, err = io.Copy(dst, src); err != nil {
-		return JsonMetadata{}, err
+		return err
 	}
 	
-	return ExtractMetaData(file)
+	return nil
 }
 
 type JsonMetadata struct {
@@ -115,7 +115,7 @@ func WriteMetadataToFile(meta JsonMetadata, filePath string) (error) {
 func GetMetaData(mediaType, fileName string) (JsonMetadata, error) {
 	var meta JsonMetadata
 
-	jsonFile, err := os.Open(filepath.Join("app", "media", mediaType, fileName, "meta.json"))
+	jsonFile, err := os.Open(JoinPath(mediaType, fileName, "meta.json"))
 	if err != nil {
 		return meta, err
 	}
