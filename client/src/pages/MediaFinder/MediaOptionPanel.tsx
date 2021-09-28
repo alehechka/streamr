@@ -3,13 +3,14 @@ import { MediaOptionsProps } from './MediaOptions';
 import styled from 'styled-components';
 import IconButton from 'components/IconButton';
 import { BsFillTrashFill } from 'react-icons/bs';
-import { BiDownload } from 'react-icons/bi';
+import { BiDownload, BiImageAdd } from 'react-icons/bi';
 import { FaPlay } from 'react-icons/fa';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Modal from 'components/Modal';
 import { useToggle } from '@alehechka/react-hooks';
 import ProgressBar from 'components/ProgressBar';
 import Text from 'components/Text';
+import { useUploadThumbnail } from 'api/thumbnail';
 
 interface MediaOptionProps extends MediaOptionsProps {
 	path: string;
@@ -34,6 +35,20 @@ const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOption
 		}
 	};
 
+	const fileInputRef = useRef<HTMLInputElement>(null);
+	const [uploadThumbnail] = useUploadThumbnail();
+	const handleUploadThumbnail = (files: FileList | null) => {
+		const file = files?.item(0);
+
+		if (mediaType && path && file) {
+			uploadThumbnail.mutate({ mediaType, fileName: path, file });
+		}
+	};
+	const handleFileUploadChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+		handleUploadThumbnail(event.target.files);
+		event.target.value = '';
+	};
+
 	useEffect(() => {
 		if (deleteMedia.isSuccess && onDelete) {
 			closeDeleteModal();
@@ -54,6 +69,10 @@ const MediaOptionPanel = ({ mediaType, path, onDelete, onNavigate }: MediaOption
 						<FaPlay size={20} />
 					</IconButton>
 				)}
+				<IconButton onClick={() => fileInputRef.current?.click()} disabled={uploadThumbnail.isLoading}>
+					<BiImageAdd size={20} />
+				</IconButton>
+				<input type='file' accept={'.png,.jpeg,.jpg'} onChange={handleFileUploadChange} hidden ref={fileInputRef} />
 				<IconButton pending={downloadMedia.isLoading} onClick={handleDownload}>
 					<BiDownload size={20} />
 				</IconButton>
